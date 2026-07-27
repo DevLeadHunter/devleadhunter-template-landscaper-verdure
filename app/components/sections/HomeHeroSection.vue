@@ -6,7 +6,7 @@
       <div class="hero__copy">
         <img
           class="hero__badge hero-anim"
-          src="/images/hero-badge.svg"
+          src="/images/verdure/hero-badge.svg"
           alt=""
           width="67"
           height="70" />

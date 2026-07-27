@@ -57,6 +57,12 @@ export interface VerdureSocialLink {
   url: string
 }
 
+/** Un chiffre clé du bandeau de stats (repris des repères de confiance). */
+export interface VerdureStat {
+  label: string
+  value: string
+}
+
 /** Contenu complet consommé par les sections de la template. */
 export interface VerdurePageContent {
   businessName: string
@@ -71,6 +77,8 @@ export interface VerdurePageContent {
   faqHeading: { eyebrow: string; title: string }
   faqs: SiteContentFaqItem[]
   cta: { title: string; lead: string; label: string }
+  stats: VerdureStat[]
+  contactHeading: { eyebrow: string; title: string; lead: string }
   contact: VerdureContact
   footerServices: string[]
   social: VerdureSocialLink[]
@@ -83,13 +91,16 @@ export const VERDURE_CONTENT_KEY: InjectionKey<ComputedRef<VerdurePageContent>> 
 
 /** Images de la maquette réutilisées comme défauts (embarquées dans le layer). */
 const SERVICE_IMAGES: string[] = [
-  '/images/image-import-4.jpg',
-  '/images/image-import-38.jpg',
-  '/images/image-import.jpg',
-  '/images/image-import-6.jpg',
+  '/images/verdure/image-import-4.jpg',
+  '/images/verdure/image-import-38.jpg',
+  '/images/verdure/image-import.jpg',
+  '/images/verdure/image-import-6.jpg',
 ]
 
-const PORTFOLIO_IMAGES: string[] = ['/images/image-import-12.jpg', '/images/image-import.jpg']
+const PORTFOLIO_IMAGES: string[] = [
+  '/images/verdure/image-import-12.jpg',
+  '/images/verdure/image-import.jpg',
+]
 
 /** Prestations par défaut quand le scraping n'a rien remonté. */
 const DEFAULT_SERVICES: VerdureService[] = [
@@ -240,7 +251,7 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
         `${businessName} conçoit, aménage et entretient vos espaces verts${city ? ` à ${city}` : ''} — avec des pratiques durables et un vrai souci du détail.`,
       ),
       ctaLabel: firstFilled(content.ctaQuoteLabel, 'Demander un devis gratuit'),
-      image: firstFilled(content.heroImage, '/images/image-import-27.jpg'),
+      image: firstFilled(content.heroImage, '/images/verdure/image-import-27.jpg'),
     },
     servicesHeading: {
       eyebrow: 'Nos prestations',
@@ -259,7 +270,7 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
         'Entreprise assurée — travail garanti',
         'Pratiques durables et éco-responsables',
       ],
-      image: firstFilled(content.aboutImage, '/images/image-import-19.jpg'),
+      image: firstFilled(content.aboutImage, '/images/verdure/image-import-19.jpg'),
     },
     howHeading: { eyebrow: 'Notre méthode', title: 'Comment ça se passe ?' },
     how: DEFAULT_HOW,
@@ -273,6 +284,30 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
       title: firstFilled(content.faqHeading, 'Vos questions, nos réponses'),
     },
     faqs,
+    stats: (content.trustItems ?? []).some(
+      (item: { value?: string; label?: string }): boolean =>
+        firstFilled(item.value, item.label).length > 0,
+    )
+      ? (content.trustItems ?? [])
+          .filter(
+            (item: { value?: string; label?: string }): boolean =>
+              firstFilled(item.value, item.label).length > 0,
+          )
+          .slice(0, 3)
+          .map((item: { value?: string; label?: string }): VerdureStat => ({
+            value: firstFilled(item.value),
+            label: firstFilled(item.label),
+          }))
+      : [
+          { label: 'Jardins entretenus', value: '180+' },
+          { label: 'Clients satisfaits', value: '100+' },
+          { label: 'Années d’expérience', value: '10 ans' },
+        ],
+    contactHeading: {
+      eyebrow: 'Contact',
+      title: firstFilled(content.contactHeading, 'Demandez votre devis gratuit'),
+      lead: 'Appelez-nous, écrivez-nous ou laissez vos coordonnées : nous revenons vers vous sous 48 h avec un premier avis et un rendez-vous de visite.',
+    },
     cta: {
       title: 'Parlons de votre jardin',
       lead: `Un projet d'aménagement ou besoin d'un entretien régulier${city ? ` à ${city}` : ''} ? Décrivez-nous votre extérieur, nous revenons vers vous sous 48 h.`,

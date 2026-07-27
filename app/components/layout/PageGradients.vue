@@ -4,19 +4,19 @@
     aria-hidden="true">
     <img
       class="page-gradient page-gradient--tl"
-      src="/images/gradient-top-left.svg"
+      src="/images/verdure/gradient-top-left.svg"
       alt=""
       width="256"
       height="423" />
     <img
       class="page-gradient page-gradient--tr"
-      src="/images/gradient-top-right.svg"
+      src="/images/verdure/gradient-top-right.svg"
       alt=""
       width="252"
       height="343" />
     <img
       class="page-gradient page-gradient--bl"
-      src="/images/gradient-top-left.svg"
+      src="/images/verdure/gradient-top-left.svg"
       alt=""
       width="256"
       height="423" />

@@ -20,7 +20,7 @@
           class="how__card">
           <div class="how__icon">
             <img
-              :src="`/images/icon-how-${index}.svg`"
+              :src="`/images/verdure/icon-how-${index}.svg`"
               alt=""
               width="40"
               height="40" />

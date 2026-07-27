@@ -23,7 +23,7 @@
             v-for="(item, index) in content.about.checks"
             :key="item">
             <img
-              :src="`/images/icon-about-${index % 3}.svg`"
+              :src="`/images/verdure/icon-about-${index % 3}.svg`"
               alt=""
               width="32"
               height="32" />

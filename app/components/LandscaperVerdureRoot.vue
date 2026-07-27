@@ -13,13 +13,15 @@
       <section id="about">
         <HomeAboutSection />
       </section>
+      <StatsBandSection />
       <HomeHowSection />
       <section id="portfolio">
         <HomePortfolioSection />
       </section>
       <FaqsSection />
+      <CtaSection />
       <section id="contact">
-        <CtaSection />
+        <ContactSection />
       </section>
     </main>
     <SiteFooter />
@@ -42,10 +44,12 @@ import SiteFooter from './layout/SiteFooter.vue'
 import HomeHeroSection from './sections/HomeHeroSection.vue'
 import HomeServicesSection from './sections/HomeServicesSection.vue'
 import HomeAboutSection from './sections/HomeAboutSection.vue'
+import StatsBandSection from './sections/StatsBandSection.vue'
 import HomeHowSection from './sections/HomeHowSection.vue'
 import HomePortfolioSection from './sections/HomePortfolioSection.vue'
 import FaqsSection from './sections/FaqsSection.vue'
 import CtaSection from './sections/CtaSection.vue'
+import ContactSection from './sections/ContactSection.vue'
 import type { SiteContent } from '~/types/SiteContent'
 import type { VerdurePageContent } from '~/types/verdure'
 import { buildVerdureContent, VERDURE_CONTENT_KEY } from '~/types/verdure'

@@ -51,23 +51,23 @@ export const homeServices = [
     title: 'Installation',
     description:
       'Unleash the beauty of nature with our creative garden design installation solutions.',
-    image: '/images/image-import-4.jpg',
+    image: '/images/verdure/image-import-4.jpg',
   },
   {
     title: 'Maintenance',
     description: 'Keep your lawn lush and vibrant with our expert maintenance services.',
-    image: '/images/image-import-38.jpg',
+    image: '/images/verdure/image-import-38.jpg',
   },
   {
     title: 'Hardscape',
     description: 'Elevate your outdoor living spaces with stunning hardscape installations',
-    image: '/images/image-import.jpg',
+    image: '/images/verdure/image-import.jpg',
   },
   {
     title: 'Irrigation',
     description:
       'Ensure your landscape stays green and healthy with efficient irrigation solutions',
-    image: '/images/image-import-6.jpg',
+    image: '/images/verdure/image-import-6.jpg',
   },
 ]
 
@@ -102,21 +102,21 @@ export const homePortfolio = [
   {
     category: 'Maintenance',
     title: 'Backyard transformation with a pool,fire pit, landscaping & more',
-    image: '/images/image-import-12.jpg',
+    image: '/images/verdure/image-import-12.jpg',
     accent: true,
   },
   {
     category: 'Maintenance',
     title: 'Backyard transformation with a pool,fire pit, landscaping & more',
-    image: '/images/image-import.jpg',
+    image: '/images/verdure/image-import.jpg',
     accent: false,
   },
 ]
 
 export const team = [
-  { name: 'John Doe', role: 'Landscaping Designer', image: '/images/image-import-19.jpg' },
-  { name: 'John Doe', role: 'Landscaping Designer', image: '/images/image-import-11.jpg' },
-  { name: 'John Doe', role: 'Landscaping Designer', image: '/images/image-import-20.jpg' },
+  { name: 'John Doe', role: 'Landscaping Designer', image: '/images/verdure/image-import-19.jpg' },
+  { name: 'John Doe', role: 'Landscaping Designer', image: '/images/verdure/image-import-11.jpg' },
+  { name: 'John Doe', role: 'Landscaping Designer', image: '/images/verdure/image-import-20.jpg' },
 ]
 
 export const stats = [
@@ -130,25 +130,25 @@ export const servicesPage = [
     slug: 'installation',
     title: 'Installation',
     description: 'Unleash the beauty of nature with our creative garden design solutions.',
-    image: '/images/image-import-4.jpg',
+    image: '/images/verdure/image-import-4.jpg',
   },
   {
     slug: 'maintenance',
     title: 'Maintenance',
     description: 'Unleash the beauty of nature with our creative garden design solutions.',
-    image: '/images/image-import-8.jpg',
+    image: '/images/verdure/image-import-8.jpg',
   },
   {
     slug: 'hardscape',
     title: 'Hardscape',
     description: 'Unleash the beauty of nature with our creative garden design solutions.',
-    image: '/images/image-import-36.jpg',
+    image: '/images/verdure/image-import-36.jpg',
   },
   {
     slug: 'irrigation',
     title: 'Irrigation',
     description: 'Unleash the beauty of nature with our creative garden design solutions.',
-    image: '/images/image-import-33.jpg',
+    image: '/images/verdure/image-import-33.jpg',
   },
 ]
 
@@ -165,35 +165,35 @@ export const portfolioItems = [
     slug: 'backyard-pool',
     category: 'Installation',
     title: 'Backyard transformation with a pool,fire pit, landscaping & more',
-    image: '/images/image-import-18.jpg',
+    image: '/images/verdure/image-import-18.jpg',
   },
   {
     slug: 'backyard-maintenance',
     category: 'Maintenance',
     title: 'Backyard transformation with a pool,fire pit, landscaping & more',
-    image: '/images/image-import-8.jpg',
+    image: '/images/verdure/image-import-8.jpg',
   },
   {
     slug: 'backyard-hardscape',
     category: 'Hardscape',
     title: 'Backyard transformation with a pool,fire pit, landscaping & more',
-    image: '/images/image-import-36.jpg',
+    image: '/images/verdure/image-import-36.jpg',
   },
   {
     slug: 'backyard-irrigation',
     category: 'Irrigation',
     title: 'Backyard transformation with a pool,fire pit, landscaping & more',
-    image: '/images/image-import-33.jpg',
+    image: '/images/verdure/image-import-33.jpg',
   },
 ]
 
 export const portfolioGallery = [
-  '/images/image-import-18.jpg',
-  '/images/image-import-28.jpg',
-  '/images/image-import-39.jpg',
-  '/images/image-import-13.jpg',
-  '/images/image-import-33.jpg',
-  '/images/image-import-29.jpg',
+  '/images/verdure/image-import-18.jpg',
+  '/images/verdure/image-import-28.jpg',
+  '/images/verdure/image-import-39.jpg',
+  '/images/verdure/image-import-13.jpg',
+  '/images/verdure/image-import-33.jpg',
+  '/images/verdure/image-import-29.jpg',
 ]
 
 export const contactInfo = [

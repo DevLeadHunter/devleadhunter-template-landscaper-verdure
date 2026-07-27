@@ -87,7 +87,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
       rgb(45 116 109 / 45%) 55%,
       rgb(0 63 46 / 35%) 100%
     ),
-    url('/images/image-import-3.jpg') center / cover no-repeat;
+    url('/images/verdure/image-import-3.jpg') center / cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;

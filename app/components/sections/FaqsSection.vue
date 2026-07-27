@@ -23,7 +23,9 @@
             <img
               class="faqs__icon"
               :src="
-                openIndex === index ? '/images/icon-faq-minus.svg' : '/images/icon-faq-plus.svg'
+                openIndex === index
+                  ? '/images/verdure/icon-faq-minus.svg'
+                  : '/images/verdure/icon-faq-plus.svg'
               "
               alt=""
               width="32"

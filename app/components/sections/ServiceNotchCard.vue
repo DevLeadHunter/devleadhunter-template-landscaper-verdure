@@ -4,13 +4,13 @@
     class="svc-card">
     <img
       class="svc-card__shape"
-      src="/images/service-card-bg.svg"
+      src="/images/verdure/service-card-bg.svg"
       alt=""
       width="264"
       height="390" />
     <div class="svc-card__icon">
       <img
-        :src="`/images/icon-service-${iconIndex}.svg`"
+        :src="`/images/verdure/icon-service-${iconIndex}.svg`"
         alt=""
         width="26"
         height="22" />
@@ -30,13 +30,13 @@
     class="svc-card">
     <img
       class="svc-card__shape"
-      src="/images/service-card-bg.svg"
+      src="/images/verdure/service-card-bg.svg"
       alt=""
       width="264"
       height="390" />
     <div class="svc-card__icon">
       <img
-        :src="`/images/icon-service-${iconIndex}.svg`"
+        :src="`/images/verdure/icon-service-${iconIndex}.svg`"
         alt=""
         width="26"
         height="22" />
