@@ -42,7 +42,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
 
 <style scoped>
 .services {
-  padding: 0 0 100px;
+  padding: 0 0 var(--verdure-section-space, 120px);
 }
 
 .services__inner {
@@ -72,10 +72,6 @@ const content: ComputedRef<VerdurePageContent> = inject(
 }
 
 @media (min-width: 700px) {
-  .services {
-    padding: 0 0 120px;
-  }
-
   .services__inner {
     gap: 56px;
   }
@@ -87,10 +83,6 @@ const content: ComputedRef<VerdurePageContent> = inject(
 }
 
 @media (min-width: 1100px) {
-  .services {
-    padding: 0 0 140px;
-  }
-
   .services__inner {
     gap: 64px;
   }

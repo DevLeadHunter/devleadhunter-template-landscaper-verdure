@@ -46,7 +46,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
 
 <style scoped>
 .portfolio {
-  padding: 0 0 100px;
+  padding: 0 0 var(--verdure-section-space, 120px);
 }
 
 .portfolio__inner {
@@ -71,10 +71,6 @@ const content: ComputedRef<VerdurePageContent> = inject(
 }
 
 @media (min-width: 900px) {
-  .portfolio {
-    padding: 0 0 140px;
-  }
-
   .portfolio__inner {
     gap: 64px;
   }

@@ -61,7 +61,7 @@ const openIndex: Ref<number> = ref(0)
 
 <style scoped>
 .faqs {
-  padding: 32px 0 80px;
+  padding: 32px 0 var(--verdure-section-space, 120px);
 }
 
 .faqs__inner {

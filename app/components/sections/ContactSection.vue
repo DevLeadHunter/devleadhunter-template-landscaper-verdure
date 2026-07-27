@@ -170,7 +170,7 @@ const MAIL_ICON: string = `<svg width="32" height="32" viewBox="0 0 24 24" fill=
 
 <style scoped>
 .contact {
-  padding: 0 0 96px;
+  padding: 0 0 var(--verdure-section-space, 120px);
 }
 
 .contact__inner {

@@ -38,7 +38,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
 
 <style scoped>
 .stats {
-  padding: 8px 0 88px;
+  padding: 8px 0 var(--verdure-section-space, 120px);
 }
 
 .stats__grid {

@@ -44,7 +44,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
 
 <style scoped>
 .cta {
-  padding: 0 0 72px;
+  padding: 0 0 var(--verdure-section-space, 120px);
 }
 
 /* Dedicated gutter so the panel never kisses the viewport on mobile/tablet */
@@ -59,12 +59,6 @@ const content: ComputedRef<VerdurePageContent> = inject(
 @media (min-width: 640px) {
   .cta__shell {
     padding-inline: 24px;
-  }
-}
-
-@media (min-width: 900px) {
-  .cta {
-    padding: 0 0 100px;
   }
 }
 

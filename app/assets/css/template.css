@@ -17,6 +17,8 @@
 }
 
 .verdure-root {
+  /* Rythme vertical unique entre les grandes sections de la one-page. */
+  --verdure-section-space: clamp(96px, 11vw, 170px);
   background: #f5f6ef;
   color: #003f2e;
   font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;

@@ -60,7 +60,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
 
 <style scoped>
 .how {
-  padding: 0 0 100px;
+  padding: 0 0 var(--verdure-section-space, 120px);
 }
 
 .how__inner {
@@ -130,10 +130,6 @@ const content: ComputedRef<VerdurePageContent> = inject(
 }
 
 @media (min-width: 900px) {
-  .how {
-    padding: 0 0 160px;
-  }
-
   .how__inner {
     gap: 72px;
   }

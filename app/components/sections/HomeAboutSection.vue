@@ -57,7 +57,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
 
 <style scoped>
 .about {
-  padding: 0 0 100px;
+  padding: 0 0 var(--verdure-section-space, 120px);
 }
 
 .about__inner {
@@ -128,10 +128,6 @@ const content: ComputedRef<VerdurePageContent> = inject(
 }
 
 @media (min-width: 640px) {
-  .about {
-    padding: 0 0 120px;
-  }
-
   .about__copy {
     padding-inline: 0;
   }
@@ -148,10 +144,6 @@ const content: ComputedRef<VerdurePageContent> = inject(
 }
 
 @media (min-width: 900px) {
-  .about {
-    padding: 0 0 160px;
-  }
-
   .about__inner {
     grid-template-columns: minmax(320px, 1fr) 1.15fr;
     gap: clamp(48px, 8vw, 140px);
