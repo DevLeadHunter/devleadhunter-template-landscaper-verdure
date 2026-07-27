@@ -84,7 +84,7 @@ useHead({ title: () => service.value?.title || 'Service' })
 
 .service-detail__includes h3 {
   margin: 0;
-  color: var(--color-brand-dark);
+  color: var(--color-verdure-brand-dark);
   font-size: clamp(20px, 5vw, 28px);
   font-weight: 600;
 }

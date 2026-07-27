@@ -5,8 +5,8 @@
         v-reveal="'left'"
         class="about__media">
         <img
-          src="/images/image-import-32.jpg"
-          alt="Landscaping professionals at work"
+          :src="content.about.image"
+          alt="L'équipe au travail sur un chantier paysager"
           width="458"
           height="540" />
       </div>
@@ -14,39 +14,45 @@
         v-reveal="'right'"
         class="about__copy">
         <div class="about__heading">
-          <p class="eyebrow">why choose us</p>
-          <h2 class="heading-xl">Take the hassle out of garden maintenance</h2>
-          <p class="body-text">
-            We assist homeowners in saving time and effort by designing and upkeeping landscapes,
-            lawns, and outdoor living areas that garner admiration. Our team comprises skilled
-            maintenance professionals certified well-versed in effective landscape upkeep services
-            to ensure the year-round health of your property.
-          </p>
+          <p class="eyebrow">Pourquoi nous choisir</p>
+          <h2 class="heading-xl">{{ content.about.heading }}</h2>
+          <p class="body-text">{{ content.about.text }}</p>
         </div>
         <ul class="about__list">
           <li
-            v-for="(item, index) in aboutChecks"
+            v-for="(item, index) in content.about.checks"
             :key="item">
             <img
-              :src="`/images/icon-about-${index}.svg`"
+              :src="`/images/icon-about-${index % 3}.svg`"
               alt=""
               width="32"
               height="32" />
             <span>{{ item }}</span>
           </li>
         </ul>
-        <NuxtLink
-          to="/about"
+        <a
+          href="#contact"
           class="btn-eco">
-          Learn more about us
-        </NuxtLink>
+          {{ content.hero.ctaLabel }}
+        </a>
       </div>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { aboutChecks } from '../../data/site'
+import type { ComputedRef } from 'vue'
+import { computed, inject } from 'vue'
+import type { VerdurePageContent } from '../../types/verdure'
+import { buildVerdureContent, VERDURE_CONTENT_KEY } from '../../types/verdure'
+
+/** Contenu de la page fourni par la racine (défauts éditoriaux FR hors racine). */
+const content: ComputedRef<VerdurePageContent> = inject(
+  VERDURE_CONTENT_KEY,
+  (): ComputedRef<VerdurePageContent> =>
+    computed((): VerdurePageContent => buildVerdureContent({})),
+  true,
+)
 </script>
 
 <style scoped>

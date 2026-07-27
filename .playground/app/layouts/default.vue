@@ -1,5 +1,5 @@
 <template>
-  <div class="site-root">
+  <div class="verdure-root site-root">
     <PageGradients />
     <SiteHeader />
     <main class="site-main">

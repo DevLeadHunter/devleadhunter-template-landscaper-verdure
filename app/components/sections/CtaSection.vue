@@ -5,18 +5,42 @@
         v-reveal="'scale'"
         class="cta__inner">
         <div class="cta__copy">
-          <h2>We're ready to start.</h2>
-          <p>Transform your home to zen garden</p>
-          <NuxtLink
-            to="/contact"
-            class="btn-eco cta__btn">
-            Make an Appointment
-          </NuxtLink>
+          <h2>{{ content.cta.title }}</h2>
+          <p>{{ content.cta.lead }}</p>
+          <div class="cta__actions">
+            <a
+              v-if="content.contact.phone"
+              :href="`tel:${content.contact.phone}`"
+              class="btn-eco cta__btn">
+              {{ content.cta.label }} · {{ content.contact.phone }}
+            </a>
+            <a
+              v-if="content.contact.email"
+              :href="`mailto:${content.contact.email}`"
+              class="btn-eco cta__btn">
+              Écrire un email
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 </template>
+
+<script lang="ts" setup>
+import type { ComputedRef } from 'vue'
+import { computed, inject } from 'vue'
+import type { VerdurePageContent } from '../../types/verdure'
+import { buildVerdureContent, VERDURE_CONTENT_KEY } from '../../types/verdure'
+
+/** Contenu de la page fourni par la racine (défauts éditoriaux FR hors racine). */
+const content: ComputedRef<VerdurePageContent> = inject(
+  VERDURE_CONTENT_KEY,
+  (): ComputedRef<VerdurePageContent> =>
+    computed((): VerdurePageContent => buildVerdureContent({})),
+  true,
+)
+</script>
 
 <style scoped>
 .cta {
@@ -112,5 +136,11 @@
     padding: 18px 42px;
     font-size: 16px;
   }
+}
+.cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
 }
 </style>

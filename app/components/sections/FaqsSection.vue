@@ -4,14 +4,14 @@
       <div
         v-reveal
         class="faqs__heading">
-        <p class="eyebrow">Frequently Asked Questions</p>
-        <h2 class="heading-xl">You've got questions. we've got answers.</h2>
+        <p class="eyebrow">{{ content.faqHeading.eyebrow }}</p>
+        <h2 class="heading-xl">{{ content.faqHeading.title }}</h2>
       </div>
       <div
         v-reveal.stagger
         class="faqs__list">
         <article
-          v-for="(item, index) in faqs"
+          v-for="(item, index) in content.faqs"
           :key="item.question"
           class="faqs__item"
           :class="{ 'is-open': openIndex === index }">
@@ -41,10 +41,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { faqs } from '../../data/site'
+import type { ComputedRef, Ref } from 'vue'
+import { computed, inject, ref } from 'vue'
+import type { VerdurePageContent } from '../../types/verdure'
+import { buildVerdureContent, VERDURE_CONTENT_KEY } from '../../types/verdure'
 
-const openIndex = ref(0)
+/** Contenu de la page fourni par la racine (défauts éditoriaux FR hors racine). */
+const content: ComputedRef<VerdurePageContent> = inject(
+  VERDURE_CONTENT_KEY,
+  (): ComputedRef<VerdurePageContent> =>
+    computed((): VerdurePageContent => buildVerdureContent({})),
+  true,
+)
+
+const openIndex: Ref<number> = ref(0)
 </script>
 
 <style scoped>

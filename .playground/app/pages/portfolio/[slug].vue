@@ -141,7 +141,7 @@ const metaItems = [
 
 .project-content__inner h3 {
   margin: 8px 0 0;
-  color: var(--color-brand-dark);
+  color: var(--color-verdure-brand-dark);
   font-size: clamp(20px, 5vw, 28px);
   font-weight: 600;
 }

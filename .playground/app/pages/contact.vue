@@ -286,19 +286,19 @@ function sendMailto() {
 .contact-form__form input,
 .contact-form__form textarea {
   width: 100%;
-  border: 1px solid color-mix(in srgb, var(--color-brand-dark) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-verdure-brand-dark) 18%, transparent);
   border-radius: 10px;
   padding: 14px 16px;
   font: inherit;
-  color: var(--color-brand-dark);
+  color: var(--color-verdure-brand-dark);
   background: #fff;
   box-sizing: border-box;
 }
 
 .contact-form__form input:focus,
 .contact-form__form textarea:focus {
-  outline: 2px solid color-mix(in srgb, var(--color-brand) 35%, transparent);
-  border-color: var(--color-brand);
+  outline: 2px solid color-mix(in srgb, var(--color-verdure-brand) 35%, transparent);
+  border-color: var(--color-verdure-brand);
 }
 
 .contact-form__form .is-full {

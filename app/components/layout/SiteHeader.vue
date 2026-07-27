@@ -1,10 +1,10 @@
 <template>
   <header class="site-header">
     <div class="site-header__bar">
-      <NuxtLink
-        to="/"
+      <a
+        :href="homeTarget"
         class="site-header__logo"
-        aria-label="Eco Landscaping home">
+        :aria-label="`${brandFirst} ${brandRest} — accueil`">
         <span
           class="site-header__mark"
           aria-hidden="true">
@@ -23,21 +23,21 @@
           </svg>
         </span>
         <span class="site-header__wordmark">
-          <span class="site-header__name">Eco</span>
-          <span class="site-header__tag">Landscaping</span>
+          <span class="site-header__name">{{ brandFirst }}</span>
+          <span class="site-header__tag">{{ brandRest }}</span>
         </span>
-      </NuxtLink>
+      </a>
 
       <nav
         class="site-header__nav"
-        aria-label="Primary">
-        <NuxtLink
-          v-for="item in site.nav"
+        aria-label="Navigation principale">
+        <a
+          v-for="item in navItems"
           :key="item.to"
-          :to="item.to"
+          :href="item.to"
           class="site-header__link">
           {{ item.label }}
-        </NuxtLink>
+        </a>
       </nav>
 
       <button
@@ -45,7 +45,7 @@
         class="site-header__burger"
         :class="{ 'is-open': open }"
         :aria-expanded="open"
-        :aria-label="open ? 'Close menu' : 'Open menu'"
+        :aria-label="open ? 'Fermer le menu' : 'Ouvrir le menu'"
         @click="open = !open">
         <span />
         <span />
@@ -61,21 +61,21 @@
         @click.self="open = false">
         <nav
           class="site-header__panel"
-          aria-label="Mobile">
-          <NuxtLink
-            v-for="item in site.nav"
+          aria-label="Navigation mobile">
+          <a
+            v-for="item in navItems"
             :key="item.to"
-            :to="item.to"
+            :href="item.to"
             class="site-header__panel-link"
             @click="open = false">
             {{ item.label }}
-          </NuxtLink>
-          <NuxtLink
-            to="/contact"
+          </a>
+          <a
+            :href="ctaTarget"
             class="btn-eco site-header__panel-cta"
             @click="open = false">
-            Make an Appointment
-          </NuxtLink>
+            {{ ctaLabel }}
+          </a>
         </nav>
       </div>
     </Teleport>
@@ -83,10 +83,50 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, ref, watch } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
+import { computed, inject, onBeforeUnmount, ref, watch } from 'vue'
+import type { VerdurePageContent } from '../../types/verdure'
+import { VERDURE_CONTENT_KEY } from '../../types/verdure'
 import { site } from '../../data/site'
 
-const open = ref(false)
+/** Contenu one-page fourni par la racine ; absent dans le playground multi-pages. */
+const injectedContent: ComputedRef<VerdurePageContent> | null = inject(VERDURE_CONTENT_KEY, null)
+
+/** Ancres de la one-page, ou pages du playground en fallback. */
+const navItems: ComputedRef<{ label: string; to: string }[]> = computed(
+  (): { label: string; to: string }[] =>
+    injectedContent
+      ? [
+          { label: 'Prestations', to: '#services' },
+          { label: 'À propos', to: '#about' },
+          { label: 'Réalisations', to: '#portfolio' },
+          { label: 'Contact', to: '#contact' },
+        ]
+      : site.nav,
+)
+
+/** Premier mot du nom : partie mise en avant du logo. */
+const brandFirst: ComputedRef<string> = computed((): string => {
+  const name: string = injectedContent ? injectedContent.value.businessName : site.name
+  return name.split(' ')[0] ?? name
+})
+
+/** Reste du nom (ou le métier quand le nom tient en un mot). */
+const brandRest: ComputedRef<string> = computed((): string => {
+  const name: string = injectedContent ? injectedContent.value.businessName : site.name
+  const rest: string = name.split(' ').slice(1).join(' ')
+  return rest || 'Paysagiste'
+})
+
+const homeTarget: ComputedRef<string> = computed((): string => (injectedContent ? '#top' : '/'))
+const ctaTarget: ComputedRef<string> = computed((): string =>
+  injectedContent ? '#contact' : '/contact',
+)
+const ctaLabel: ComputedRef<string> = computed((): string =>
+  injectedContent ? injectedContent.value.hero.ctaLabel : 'Make an Appointment',
+)
+
+const open: Ref<boolean> = ref(false)
 const route = useRoute()
 
 watch(open, (isOpen) => {

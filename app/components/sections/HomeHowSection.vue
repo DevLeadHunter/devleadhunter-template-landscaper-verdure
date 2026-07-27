@@ -4,18 +4,18 @@
       <div
         v-reveal
         class="how__heading">
-        <p class="eyebrow">how it works</p>
-        <h2 class="heading-xl">Yard and lawn care made simple.</h2>
+        <p class="eyebrow">{{ content.howHeading.eyebrow }}</p>
+        <h2 class="heading-xl">{{ content.howHeading.title }}</h2>
         <p class="lead-sm">
-          Our experts will make a personalized plan for your yard so you can relax and enjoy your
-          outdoor space hassle-free.
+          Un déroulé simple et sans stress : vous savez toujours où en est votre projet, du premier
+          rendez-vous à la dernière finition.
         </p>
       </div>
       <div
         v-reveal.stagger
         class="how__steps">
         <article
-          v-for="(item, index) in howItWorks"
+          v-for="(item, index) in content.how"
           :key="item.step"
           class="how__card">
           <div class="how__icon">
@@ -33,18 +33,29 @@
         </article>
       </div>
       <div v-reveal="{ type: 'up', delay: 60 }">
-        <NuxtLink
-          to="/contact"
+        <a
+          href="#contact"
           class="btn-eco how__btn">
-          Make an Appointment
-        </NuxtLink>
+          {{ content.hero.ctaLabel }}
+        </a>
       </div>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { howItWorks } from '../../data/site'
+import type { ComputedRef } from 'vue'
+import { computed, inject } from 'vue'
+import type { VerdurePageContent } from '../../types/verdure'
+import { buildVerdureContent, VERDURE_CONTENT_KEY } from '../../types/verdure'
+
+/** Contenu de la page fourni par la racine (défauts éditoriaux FR hors racine). */
+const content: ComputedRef<VerdurePageContent> = inject(
+  VERDURE_CONTENT_KEY,
+  (): ComputedRef<VerdurePageContent> =>
+    computed((): VerdurePageContent => buildVerdureContent({})),
+  true,
+)
 </script>
 
 <style scoped>

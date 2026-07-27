@@ -187,14 +187,14 @@ const teamSocials = [
 
 .stats__label {
   margin: 0;
-  color: var(--color-brand);
+  color: var(--color-verdure-brand);
   font-size: 16px;
   font-weight: 600;
 }
 
 .stats__value {
   margin: 0;
-  color: var(--color-brand-dark);
+  color: var(--color-verdure-brand-dark);
   font-size: clamp(36px, 10vw, 56px);
   font-weight: 600;
 }
@@ -239,14 +239,14 @@ const teamSocials = [
 
 .team__card h3 {
   margin: 16px 0 6px;
-  color: var(--color-brand-dark);
+  color: var(--color-verdure-brand-dark);
   font-size: 18px;
   font-weight: 600;
 }
 
 .team__card > p {
   margin: 0;
-  color: var(--color-brand);
+  color: var(--color-verdure-brand);
   font-size: 15px;
 }
 

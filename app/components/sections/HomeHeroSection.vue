@@ -12,48 +12,46 @@
           height="70" />
         <div class="hero__heading">
           <h1 class="heading-hero hero-anim hero-anim--title">
-            Best Landscape
+            {{ content.hero.titleLine1 }}
             <br />
-            Design &amp; Maintenance
+            {{ content.hero.titleLine2 }}
           </h1>
-          <p class="lead hero-anim hero-anim--lead">
-            We are proud to be a responsible and sustainable lawn care company, dedicated to
-            preserving the environment and the health of your lawn
-          </p>
+          <p class="lead hero-anim hero-anim--lead">{{ content.hero.lead }}</p>
           <div class="hero-anim hero-anim--cta">
-            <NuxtLink
-              to="/contact"
+            <a
+              href="#contact"
               class="btn-eco">
-              Make an Appointment
-            </NuxtLink>
+              {{ content.hero.ctaLabel }}
+            </a>
           </div>
         </div>
       </div>
       <div class="hero__media hero-anim hero-anim--media">
         <img
-          src="/images/image-import-27.jpg"
-          alt="Professionally landscaped garden with stone path"
+          :src="content.hero.image"
+          alt="Jardin aménagé et entretenu par un paysagiste professionnel"
           width="1140"
           height="550" />
-        <button
-          type="button"
-          class="hero__play"
-          aria-label="Play video">
-          <img
-            src="/images/play.svg"
-            alt=""
-            width="42"
-            height="50" />
-        </button>
       </div>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import type { ComputedRef, Ref } from 'vue'
+import { computed, inject, onMounted, ref } from 'vue'
+import type { VerdurePageContent } from '../../types/verdure'
+import { buildVerdureContent, VERDURE_CONTENT_KEY } from '../../types/verdure'
 
-const ready = ref(false)
+/** Contenu de la page fourni par la racine (défauts éditoriaux FR hors racine). */
+const content: ComputedRef<VerdurePageContent> = inject(
+  VERDURE_CONTENT_KEY,
+  (): ComputedRef<VerdurePageContent> =>
+    computed((): VerdurePageContent => buildVerdureContent({})),
+  true,
+)
+
+const ready: Ref<boolean> = ref(false)
 
 onMounted(() => {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches

@@ -4,20 +4,20 @@
       <div
         v-reveal
         class="portfolio__heading">
-        <p class="eyebrow">portfolio</p>
-        <h2 class="heading-xl">Recent project highlights</h2>
+        <p class="eyebrow">{{ content.portfolioHeading.eyebrow }}</p>
+        <h2 class="heading-xl">{{ content.portfolioHeading.title }}</h2>
         <p class="lead-sm">
-          Our commitment to excellence ensures that your landscape is not only stunning but also
-          affordable.
+          Chaque chantier est mené avec le même soin, qu'il s'agisse d'une création complète ou d'un
+          entretien régulier.
         </p>
       </div>
       <div
         v-reveal.stagger
         class="portfolio__grid">
         <PortfolioProjectCard
-          v-for="(item, index) in homePortfolio"
+          v-for="(item, index) in content.portfolio"
           :key="item.image"
-          to="/portfolio/backyard-pool"
+          to="#contact"
           :image="item.image"
           :category="item.category"
           :title="item.title"
@@ -29,8 +29,19 @@
 </template>
 
 <script lang="ts" setup>
-import { homePortfolio } from '../../data/site'
+import type { ComputedRef } from 'vue'
+import { computed, inject } from 'vue'
+import type { VerdurePageContent } from '../../types/verdure'
+import { buildVerdureContent, VERDURE_CONTENT_KEY } from '../../types/verdure'
 import PortfolioProjectCard from './PortfolioProjectCard.vue'
+
+/** Contenu de la page fourni par la racine (défauts éditoriaux FR hors racine). */
+const content: ComputedRef<VerdurePageContent> = inject(
+  VERDURE_CONTENT_KEY,
+  (): ComputedRef<VerdurePageContent> =>
+    computed((): VerdurePageContent => buildVerdureContent({})),
+  true,
+)
 </script>
 
 <style scoped>

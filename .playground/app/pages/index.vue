@@ -1,23 +1,29 @@
 <template>
-  <div>
-    <HomeHeroSection />
-    <HomeServicesSection />
-    <HomeAboutSection />
-    <HomeHowSection />
-    <HomePortfolioSection />
-    <FaqsSection />
-    <CtaSection />
-  </div>
+  <LandscaperVerdureRoot :content="previewContent" />
 </template>
 
 <script lang="ts" setup>
-import HomeHeroSection from '../../../app/components/sections/HomeHeroSection.vue'
-import HomeServicesSection from '../../../app/components/sections/HomeServicesSection.vue'
-import HomeAboutSection from '../../../app/components/sections/HomeAboutSection.vue'
-import HomeHowSection from '../../../app/components/sections/HomeHowSection.vue'
-import HomePortfolioSection from '../../../app/components/sections/HomePortfolioSection.vue'
-import FaqsSection from '../../../app/components/sections/FaqsSection.vue'
-import CtaSection from '../../../app/components/sections/CtaSection.vue'
+// Page d'accueil du playground : rejoue le chemin de prod (Root + SiteContent),
+// avec un paysagiste fictif réaliste. Les sous-pages restent la maquette multi-pages.
+import LandscaperVerdureRoot from '../../../app/components/LandscaperVerdureRoot.vue'
+import type { SiteContent } from '../../../app/types/SiteContent'
 
-useHead({ title: 'Home' })
+definePageMeta({ layout: false })
+
+const previewContent: SiteContent = {
+  businessName: 'Les Jardins d’Émeraude',
+  phone: '02 99 47 12 58',
+  email: 'contact@jardins-emeraude.fr',
+  city: 'Rennes',
+  area: 'Rennes et sa métropole',
+  zones: ['Rennes', 'Cesson-Sévigné', 'Bruz', 'Betton', 'Saint-Grégoire'],
+  openingHours: [
+    { day: 'Lundi – Vendredi', hours: '8h00 – 18h30' },
+    { day: 'Samedi', hours: '9h00 – 12h30' },
+  ],
+  social: [
+    { network: 'Facebook', url: 'https://facebook.com/jardins-emeraude' },
+    { network: 'Instagram', url: 'https://instagram.com/jardins.emeraude' },
+  ],
+}
 </script>

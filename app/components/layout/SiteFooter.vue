@@ -7,50 +7,53 @@
       aria-hidden="true" />
     <div class="container-eco container-eco--wide site-footer__top">
       <div class="site-footer__brand">
-        <p class="site-footer__name">{{ site.name }}</p>
-        <p class="body-text site-footer__tagline">{{ site.tagline }}</p>
+        <p class="site-footer__name">{{ brandName }}</p>
+        <p class="body-text site-footer__tagline">{{ tagline }}</p>
         <div
+          v-if="socialLinks.length"
           class="site-footer__social"
-          aria-label="Social links">
+          aria-label="Réseaux sociaux">
           <a
-            v-for="(icon, i) in socialIcons"
-            :key="i"
-            href="#"
+            v-for="link in socialLinks"
+            :key="link.label"
+            :href="link.url"
+            target="_blank"
+            rel="noopener noreferrer"
             class="site-footer__social-link"
-            :aria-label="icon.label">
+            :aria-label="link.label">
             <span
               class="site-footer__social-ring"
-              v-html="icon.svg" />
+              v-html="link.svg" />
           </a>
         </div>
       </div>
       <div class="site-footer__cols">
         <div>
-          <p class="site-footer__heading">ADDRESS</p>
-          <p class="body-text">{{ site.address }}</p>
+          <p class="site-footer__heading">CONTACT</p>
+          <p class="body-text">{{ areaLabel }}</p>
           <p class="body-text site-footer__contact">
-            Phone: {{ site.phone }}
-            <br />
-            Email: {{ site.email }}
+            <template v-if="phone">
+              Téléphone : {{ phone }}
+              <br />
+            </template>
+            <template v-if="email">Email : {{ email }}</template>
           </p>
         </div>
         <div>
           <p class="site-footer__heading">NAVIGATION</p>
           <ul>
             <li
-              v-for="item in site.nav"
+              v-for="item in navItems"
               :key="item.to">
-              <NuxtLink :to="item.to">{{
-                item.label === 'Service' ? 'Services' : item.label
-              }}</NuxtLink>
+              <a :href="item.to">{{ item.label }}</a>
             </li>
           </ul>
         </div>
         <div>
-          <p class="site-footer__heading">OUR SERVICES</p>
+          <p class="site-footer__heading">NOS PRESTATIONS</p>
           <ul>
             <li
-              v-for="service in site.footerServices"
+              v-for="service in footerServices"
               :key="service">
               {{ service }}
             </li>
@@ -59,17 +62,75 @@
       </div>
     </div>
     <div class="container-eco container-eco--wide site-footer__bottom">
-      <p>© 2023 Eco landscaping services All rights reserved.</p>
-      <div class="site-footer__legal">
-        <span>Privacy policy</span>
-        <span>Terms and Conditions</span>
-      </div>
+      <p>© {{ currentYear }} {{ brandName }} — Tous droits réservés.</p>
     </div>
   </footer>
 </template>
 
 <script lang="ts" setup>
+import type { ComputedRef } from 'vue'
+import { computed, inject } from 'vue'
+import type { VerdurePageContent, VerdureSocialLink } from '../../types/verdure'
+import { VERDURE_CONTENT_KEY } from '../../types/verdure'
 import { site } from '../../data/site'
+
+/** Contenu one-page fourni par la racine ; absent dans le playground multi-pages. */
+const injectedContent: ComputedRef<VerdurePageContent> | null = inject(VERDURE_CONTENT_KEY, null)
+
+const brandName: ComputedRef<string> = computed((): string =>
+  injectedContent ? injectedContent.value.businessName : site.name,
+)
+
+/** Accroche courte sous le nom (le lead du hero en mode one-page). */
+const tagline: ComputedRef<string> = computed((): string =>
+  injectedContent ? injectedContent.value.hero.lead : site.tagline,
+)
+
+const areaLabel: ComputedRef<string> = computed((): string =>
+  injectedContent ? `Intervient sur ${injectedContent.value.contact.area}` : site.address,
+)
+
+const phone: ComputedRef<string> = computed((): string =>
+  injectedContent ? injectedContent.value.contact.phone : site.phone,
+)
+
+const email: ComputedRef<string> = computed((): string =>
+  injectedContent ? injectedContent.value.contact.email : site.email,
+)
+
+const navItems: ComputedRef<{ label: string; to: string }[]> = computed(
+  (): { label: string; to: string }[] =>
+    injectedContent
+      ? [
+          { label: 'Prestations', to: '#services' },
+          { label: 'À propos', to: '#about' },
+          { label: 'Réalisations', to: '#portfolio' },
+          { label: 'Contact', to: '#contact' },
+        ]
+      : site.nav,
+)
+
+const footerServices: ComputedRef<string[]> = computed((): string[] =>
+  injectedContent ? injectedContent.value.footerServices : site.footerServices,
+)
+
+/** Réseaux du prospect appariés à leurs pictos (les inconnus retombent sur le premier). */
+const socialLinks: ComputedRef<{ label: string; url: string; svg: string }[]> = computed(
+  (): { label: string; url: string; svg: string }[] => {
+    if (!injectedContent) return []
+    return injectedContent.value.social.map(
+      (link: VerdureSocialLink): { label: string; url: string; svg: string } => {
+        const icon: { label: string; svg: string } | undefined = socialIcons.find(
+          (candidate: { label: string; svg: string }): boolean =>
+            candidate.label.toLowerCase() === link.network.toLowerCase(),
+        )
+        return { label: link.label, url: link.url, svg: (icon ?? socialIcons[0]!).svg }
+      },
+    )
+  },
+)
+
+const currentYear: number = new Date().getFullYear()
 
 const socialIcons = [
   {
@@ -95,7 +156,7 @@ const socialIcons = [
 .site-footer {
   position: relative;
   overflow: hidden;
-  background: var(--color-surface);
+  background: var(--color-verdure-surface);
   padding: 56px 0 24px;
 }
 
@@ -108,7 +169,7 @@ const socialIcons = [
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    color-mix(in srgb, var(--color-brand-accent) 40%, transparent),
+    color-mix(in srgb, var(--color-verdure-brand-accent) 40%, transparent),
     transparent 70%
   );
   pointer-events: none;
@@ -164,7 +225,7 @@ const socialIcons = [
 
 .site-footer__heading {
   margin: 0 0 20px;
-  color: var(--color-brand);
+  color: var(--color-verdure-brand);
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 1.4px;
@@ -180,7 +241,7 @@ const socialIcons = [
 
 .site-footer__cols a,
 .site-footer__cols li {
-  color: var(--color-brand-dark);
+  color: var(--color-verdure-brand-dark);
   font-size: clamp(15px, 1.05vw, 16px);
   text-decoration: none;
 }
@@ -196,7 +257,7 @@ const socialIcons = [
   justify-content: space-between;
   gap: 16px;
   padding-top: 28px;
-  border-top: 1px solid color-mix(in srgb, var(--color-brand-dark) 12%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--color-verdure-brand-dark) 12%, transparent);
   font-size: 15px;
   color: #000;
 }
