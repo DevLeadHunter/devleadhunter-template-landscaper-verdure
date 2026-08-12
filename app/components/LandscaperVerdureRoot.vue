@@ -6,22 +6,22 @@
     <PageGradients />
     <SiteHeader />
     <main class="verdure-root__main">
-      <HomeHeroSection />
+      <HomeHeroSection v-bind="editableAttrs(props.content._editable?.hero)" />
       <section id="services">
-        <HomeServicesSection />
+        <HomeServicesSection v-bind="editableAttrs(props.content._editable?.services)" />
       </section>
       <section id="about">
-        <HomeAboutSection />
+        <HomeAboutSection v-bind="editableAttrs(props.content._editable?.about)" />
       </section>
       <StatsBandSection />
       <HomeHowSection />
       <section id="portfolio">
-        <HomePortfolioSection />
+        <HomePortfolioSection v-bind="editableAttrs(props.content._editable?.gallery)" />
       </section>
-      <FaqsSection />
-      <CtaSection />
+      <FaqsSection v-bind="editableAttrs(props.content._editable?.faq)" />
+      <CtaSection v-bind="editableAttrs(props.content._editable?.contact)" />
       <section id="contact">
-        <ContactSection />
+        <ContactSection v-bind="editableAttrs(props.content._editable?.contact)" />
       </section>
     </main>
     <SiteFooter />
@@ -51,6 +51,7 @@ import FaqsSection from './sections/FaqsSection.vue'
 import CtaSection from './sections/CtaSection.vue'
 import ContactSection from './sections/ContactSection.vue'
 import type { SiteContent } from '~/types/SiteContent'
+import { editableAttrs } from '@devleadhunter/website-content'
 import type { VerdurePageContent } from '~/types/verdure'
 import { buildVerdureContent, VERDURE_CONTENT_KEY } from '~/types/verdure'
 
