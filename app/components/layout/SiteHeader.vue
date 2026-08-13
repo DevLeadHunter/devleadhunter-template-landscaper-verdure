@@ -5,7 +5,13 @@
         :href="homeTarget"
         class="site-header__logo"
         :aria-label="`${brandFirst} ${brandRest} — accueil`">
+        <img
+          v-if="brandLogo"
+          :src="brandLogo"
+          alt=""
+          class="site-header__logo-img" />
         <span
+          v-else
           class="site-header__mark"
           aria-hidden="true">
           <svg
@@ -118,6 +124,12 @@ const brandRest: ComputedRef<string> = computed((): string => {
   return rest || 'Paysagiste'
 })
 
+/** Logo réel du prospect : remplace la feuille décorative quand il est fourni. */
+const brandLogo: ComputedRef<string> = computed((): string => {
+  const logo: string = injectedContent ? injectedContent.value.logo : ''
+  return typeof logo === 'string' ? logo.trim() : ''
+})
+
 const homeTarget: ComputedRef<string> = computed((): string => (injectedContent ? '#top' : '/'))
 const ctaTarget: ComputedRef<string> = computed((): string =>
   injectedContent ? '#contact' : '/contact',
@@ -177,6 +189,14 @@ onBeforeUnmount(() => {
   min-width: 0;
   text-decoration: none;
   color: inherit;
+}
+
+.site-header__logo-img {
+  flex-shrink: 0;
+  height: 38px;
+  width: auto;
+  max-width: 130px;
+  object-fit: contain;
 }
 
 .site-header__mark {

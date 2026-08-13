@@ -66,6 +66,7 @@ export interface VerdureStat {
 /** Contenu complet consommé par les sections de la template. */
 export interface VerdurePageContent {
   businessName: string
+  logo: string
   hero: VerdureHero
   servicesHeading: { eyebrow: string; title: string; lead: string }
   services: VerdureService[]
@@ -194,6 +195,7 @@ function firstFilled(...values: (string | undefined)[]): string {
  */
 export function buildVerdureContent(content: SiteContent): VerdurePageContent {
   const businessName: string = firstFilled(content.businessName, 'Votre paysagiste')
+  const logo: string = typeof content.logo === 'string' ? content.logo.trim() : ''
   const city: string = firstFilled(content.city)
   const area: string = firstFilled(content.area, city ? `${city} et ses environs` : 'votre secteur')
 
@@ -243,6 +245,7 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
 
   return {
     businessName,
+    logo,
     hero: {
       titleLine1: 'Des extérieurs pensés,',
       titleLine2: 'plantés et entretenus',
