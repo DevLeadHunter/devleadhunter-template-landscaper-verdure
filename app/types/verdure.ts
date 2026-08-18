@@ -77,7 +77,7 @@ export interface VerdurePageContent {
   portfolio: VerdurePortfolioItem[]
   faqHeading: { eyebrow: string; title: string }
   faqs: SiteContentFaqItem[]
-  cta: { title: string; lead: string; label: string }
+  cta: { title: string; lead: string; label: string; background: string }
   stats: VerdureStat[]
   contactHeading: { eyebrow: string; title: string; lead: string }
   contact: VerdureContact
@@ -208,23 +208,28 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
         service.description,
         'Une prestation menée avec soin, du premier échange aux finitions.',
       ),
-      image: SERVICE_IMAGES[index % SERVICE_IMAGES.length] ?? '',
+      image: firstFilled(service.image, SERVICE_IMAGES[index % SERVICE_IMAGES.length] ?? ''),
     }))
   const services: VerdureService[] =
     scrapedServices.length >= 3 ? scrapedServices : DEFAULT_SERVICES
 
-  const galleryPortfolio: VerdurePortfolioItem[] = (content.gallery ?? [])
-    .filter((image: { url?: string }): boolean => firstFilled(image.url).length > 0)
+  const editablePortfolio: VerdurePortfolioItem[] = (content.portfolio ?? [])
+    .filter((item: { image?: string }): boolean => firstFilled(item.image).length > 0)
     .slice(0, 2)
-    .map((image: { url?: string; alt?: string }, index: number): VerdurePortfolioItem => ({
-      category: 'Réalisation',
-      title: firstFilled(image.alt, 'Aménagement complet d’un jardin — avant, pendant, après'),
-      image: firstFilled(image.url),
-      accent: index === 0,
-    }))
+    .map(
+      (
+        item: { image?: string; title?: string; category?: string },
+        index: number,
+      ): VerdurePortfolioItem => ({
+        category: firstFilled(item.category, 'Réalisation'),
+        title: firstFilled(item.title, 'Aménagement complet d’un jardin — avant, pendant, après'),
+        image: firstFilled(item.image),
+        accent: index === 0,
+      }),
+    )
   const portfolio: VerdurePortfolioItem[] =
-    galleryPortfolio.length > 0
-      ? galleryPortfolio
+    editablePortfolio.length > 0
+      ? editablePortfolio
       : [
           {
             category: 'Création',
@@ -279,7 +284,7 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
     how: DEFAULT_HOW,
     portfolioHeading: {
       eyebrow: 'Réalisations',
-      title: firstFilled(content.galleryHeading, 'Nos derniers chantiers'),
+      title: firstFilled(content.portfolioHeading, 'Nos derniers chantiers'),
     },
     portfolio,
     faqHeading: {
@@ -315,6 +320,7 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
       title: 'Parlons de votre jardin',
       lead: `Un projet d'aménagement ou besoin d'un entretien régulier${city ? ` à ${city}` : ''} ? Décrivez-nous votre extérieur, nous revenons vers vous sous 48 h.`,
       label: firstFilled(content.ctaCallLabel, 'Être rappelé'),
+      background: firstFilled(content.images?.ctaBackground, '/images/verdure/image-import-3.jpg'),
     },
     contact: {
       phone: firstFilled(content.phone),

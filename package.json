@@ -21,7 +21,7 @@
     "lint:fix": "npm run lint:prettier:fix && npm run lint:eslint:fix"
   },
   "dependencies": {
-    "@devleadhunter/website-content": "github:DevLeadHunter/devleadhunter-website-content#v1.5.0",
+    "@devleadhunter/website-content": "github:DevLeadHunter/devleadhunter-website-content#v1.6.0",
     "@tailwindcss/vite": "^4.3.2",
     "nuxt": "^4.4.8",
     "tailwindcss": "^4.3.2",

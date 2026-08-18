@@ -3,7 +3,8 @@
     <div class="cta__shell">
       <div
         v-reveal="'scale'"
-        class="cta__inner">
+        class="cta__inner"
+        :style="{ '--cta-bg': `url('${content.cta.background}')` }">
         <div class="cta__copy">
           <h2>{{ content.cta.title }}</h2>
           <p>{{ content.cta.lead }}</p>
@@ -81,7 +82,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
       rgb(45 116 109 / 45%) 55%,
       rgb(0 63 46 / 35%) 100%
     ),
-    url('/images/verdure/image-import-3.jpg') center / cover no-repeat;
+    var(--cta-bg, url('/images/verdure/image-import-3.jpg')) center / cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
