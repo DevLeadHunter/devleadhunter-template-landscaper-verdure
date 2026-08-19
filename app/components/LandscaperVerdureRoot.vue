@@ -16,7 +16,7 @@
       <StatsBandSection />
       <HomeHowSection />
       <section id="portfolio">
-        <HomePortfolioSection v-bind="editableAttrs(props.content._editable?.gallery)" />
+        <HomePortfolioSection v-bind="editableAttrs(props.content._editable?.portfolio)" />
       </section>
       <FaqsSection v-bind="editableAttrs(props.content._editable?.faq)" />
       <CtaSection v-bind="editableAttrs(props.content._editable?.contact)" />
