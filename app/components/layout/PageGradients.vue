@@ -2,9 +2,30 @@
   <div
     class="page-gradients"
     aria-hidden="true">
-    <div class="page-gradient page-gradient--tl" />
-    <div class="page-gradient page-gradient--tr" />
-    <div class="page-gradient page-gradient--bl" />
+    <div class="page-gradient page-gradient--tl">
+      <svg
+        viewBox="0 0 256.25 423.35"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M215.82635 203.88597c-49.3738 45.53389-124.60813 44.26825-168.04056-2.82689-43.43243-47.09514-38.616-122.1858 10.7578-167.71969 49.37381-45.53389 124.60814-44.26825 168.04058 2.82689 43.43243 47.09514 38.61599 122.1858-10.75782 167.71969z m-35.50167 153.50765c-52.39089 60.10061-124.05482 83.3739-160.06586 51.98236-36.01105-31.39154-22.73256-105.56058 29.65832-165.6612 52.39089-60.10061 124.05481-83.37391 160.06586-51.98237 36.01105 31.39154 22.73256 105.56059-29.65832 165.66121z" />
+      </svg>
+    </div>
+    <div class="page-gradient page-gradient--tr">
+      <svg
+        viewBox="0 0 251.65 343.15"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M251.65492 219.24588c0-68.42813-54.97888-123.90009-122.79876-123.90009-67.81989 0-122.79877 55.47195-122.79877 123.90009 0 68.42813 54.97888 123.90012 122.79877 123.90012 67.81988 0 122.79876-55.47199 122.79876-123.90012z m-46.97609-116.23095c0-56.89357-45.81891-103.01493-102.33941-103.01493-56.5205 0-102.33942 46.12136-102.33942 103.01493 0 56.89358 45.81892 103.01493 102.33942 103.01493 56.5205 0 102.33941-46.12135 102.33941-103.01493z" />
+      </svg>
+    </div>
+    <div class="page-gradient page-gradient--bl">
+      <svg
+        viewBox="0 0 256.25 423.35"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M215.82635 203.88597c-49.3738 45.53389-124.60813 44.26825-168.04056-2.82689-43.43243-47.09514-38.616-122.1858 10.7578-167.71969 49.37381-45.53389 124.60814-44.26825 168.04058 2.82689 43.43243 47.09514 38.61599 122.1858-10.75782 167.71969z m-35.50167 153.50765c-52.39089 60.10061-124.05482 83.3739-160.06586 51.98236-36.01105-31.39154-22.73256-105.56058 29.65832-165.6612 52.39089-60.10061 124.05481-83.37391 160.06586-51.98237 36.01105 31.39154 22.73256 105.56059-29.65832 165.66121z" />
+      </svg>
+    </div>
   </div>
 </template>
 
@@ -19,16 +40,15 @@
 
 .page-gradient {
   position: absolute;
-  display: block;
   filter: blur(100px);
   opacity: 0.85;
-  background-color: var(--color-verdure-glow);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-size: contain;
-  mask-size: contain;
+}
+
+.page-gradient svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: var(--color-verdure-glow);
 }
 
 .page-gradient--tl {
@@ -36,8 +56,6 @@
   top: 180px;
   width: clamp(280px, 22vw, 420px);
   aspect-ratio: 256 / 423;
-  -webkit-mask-image: url('/images/verdure/gradient-top-left.svg');
-  mask-image: url('/images/verdure/gradient-top-left.svg');
 }
 
 .page-gradient--tr {
@@ -47,8 +65,6 @@
   aspect-ratio: 252 / 343;
   transform: rotate(50deg);
   transform-origin: center;
-  -webkit-mask-image: url('/images/verdure/gradient-top-right.svg');
-  mask-image: url('/images/verdure/gradient-top-right.svg');
 }
 
 .page-gradient--bl {
@@ -57,7 +73,5 @@
   width: clamp(300px, 24vw, 460px);
   aspect-ratio: 256 / 423;
   opacity: 0.55;
-  -webkit-mask-image: url('/images/verdure/gradient-top-left.svg');
-  mask-image: url('/images/verdure/gradient-top-left.svg');
 }
 </style>
