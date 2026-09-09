@@ -74,7 +74,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
 
 .stats__value {
   margin: 0;
-  color: var(--color-verdure-brand-dark);
+  color: var(--color-verdure-ink);
   font-size: clamp(36px, 10vw, 56px);
   font-weight: 600;
 }

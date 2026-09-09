@@ -110,7 +110,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
   align-items: center;
   justify-content: flex-start;
   gap: 14px;
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: clamp(15px, 1.1vw, 18px);
   font-weight: 500;
   text-align: left;

@@ -73,12 +73,10 @@ const parsed: ComputedRef<VerdurePageContent> = computed((): VerdurePageContent 
 
 provide(VERDURE_CONTENT_KEY, parsed)
 
-/** Palette du prospect appliquée par-dessus les tokens par défaut de la DA. */
+/** Palette du prospect appliquée par-dessus les tokens par défaut de la DA (encre fixe pour la lisibilité). */
 const themeVars: ComputedRef<Record<string, string>> = computed((): Record<string, string> => ({
   '--color-verdure-brand': parsed.value.theme.primary,
-  '--color-verdure-muted': parsed.value.theme.primary,
-  '--color-verdure-ink': parsed.value.theme.secondary,
-  '--color-verdure-brand-dark': parsed.value.theme.secondary,
+  '--color-verdure-surface': parsed.value.theme.secondary,
   '--color-verdure-brand-lime': parsed.value.theme.accent,
 }))
 

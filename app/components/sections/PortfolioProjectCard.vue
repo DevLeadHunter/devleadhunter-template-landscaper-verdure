@@ -116,7 +116,7 @@ withDefaults(
 }
 
 .pf-card__meta.is-accent {
-  background: #bcff83;
+  background: var(--color-verdure-brand-lime);
 }
 
 .pf-card__text {
@@ -126,14 +126,14 @@ withDefaults(
 
 .pf-card__cat {
   margin: 0;
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: 14px;
   font-weight: 400;
 }
 
 .pf-card__meta h3 {
   margin: 0;
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: clamp(15px, 3.8vw, 18px);
   font-weight: 600;
   line-height: 1.35;
@@ -143,15 +143,15 @@ withDefaults(
   width: 48px;
   height: 48px;
   border-radius: 999px;
-  background: #bcff83;
+  background: var(--color-verdure-brand-lime);
   display: grid;
   place-items: center;
-  box-shadow: 0 0 0 8px #f5f6ef;
+  box-shadow: 0 0 0 8px var(--color-verdure-surface);
 }
 
 .pf-card__meta.is-accent .pf-card__arrow {
   background: #fff;
-  box-shadow: 0 0 0 8px #bcff83;
+  box-shadow: 0 0 0 8px var(--color-verdure-brand-lime);
 }
 
 .pf-card__arrow svg {
@@ -175,11 +175,11 @@ withDefaults(
   .pf-card__arrow {
     width: 56px;
     height: 56px;
-    box-shadow: 0 0 0 10px #f5f6ef;
+    box-shadow: 0 0 0 10px var(--color-verdure-surface);
   }
 
   .pf-card__meta.is-accent .pf-card__arrow {
-    box-shadow: 0 0 0 10px #bcff83;
+    box-shadow: 0 0 0 10px var(--color-verdure-brand-lime);
   }
 }
 </style>

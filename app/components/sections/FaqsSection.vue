@@ -99,7 +99,7 @@ const openIndex: Ref<number> = ref(0)
   padding: 0;
   border: 0;
   background: transparent;
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: 16px;
   font-weight: 600;
   line-height: 1.35;

@@ -169,7 +169,7 @@ const socialIcons = [
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    color-mix(in srgb, var(--color-verdure-brand-accent) 40%, transparent),
+    color-mix(in srgb, var(--color-verdure-brand-lime) 40%, transparent),
     transparent 70%
   );
   pointer-events: none;
@@ -208,7 +208,7 @@ const socialIcons = [
   width: 40px;
   height: 40px;
   border-radius: 999px;
-  border: 1.5px solid #003f2e;
+  border: 1.5px solid var(--color-verdure-ink);
   text-decoration: none;
 }
 
@@ -241,7 +241,7 @@ const socialIcons = [
 
 .site-footer__cols a,
 .site-footer__cols li {
-  color: var(--color-verdure-brand-dark);
+  color: var(--color-verdure-ink);
   font-size: clamp(15px, 1.05vw, 16px);
   text-decoration: none;
 }
@@ -257,7 +257,7 @@ const socialIcons = [
   justify-content: space-between;
   gap: 16px;
   padding-top: 28px;
-  border-top: 1px solid color-mix(in srgb, var(--color-verdure-brand-dark) 12%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--color-verdure-ink) 12%, transparent);
   font-size: 15px;
   color: #000;
 }

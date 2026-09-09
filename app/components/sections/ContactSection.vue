@@ -203,7 +203,7 @@ const MAIL_ICON: string = `<svg width="32" height="32" viewBox="0 0 24 24" fill=
   display: grid;
   gap: 10px;
   justify-items: center;
-  color: var(--color-verdure-muted);
+  color: var(--color-verdure-brand);
 }
 
 .contact__icon {
@@ -222,7 +222,7 @@ const MAIL_ICON: string = `<svg width="32" height="32" viewBox="0 0 24 24" fill=
 
 .contact__point h3 {
   margin: 0;
-  color: var(--color-verdure-brand-dark);
+  color: var(--color-verdure-ink);
   font-size: 18px;
   font-weight: 600;
   line-height: 1.2;
@@ -259,7 +259,7 @@ const MAIL_ICON: string = `<svg width="32" height="32" viewBox="0 0 24 24" fill=
 }
 
 .contact__form span {
-  color: var(--color-verdure-brand-dark);
+  color: var(--color-verdure-ink);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -268,11 +268,11 @@ const MAIL_ICON: string = `<svg width="32" height="32" viewBox="0 0 24 24" fill=
 .contact__form input,
 .contact__form textarea {
   width: 100%;
-  border: 1px solid color-mix(in srgb, var(--color-verdure-brand-dark) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-verdure-ink) 18%, transparent);
   border-radius: 10px;
   padding: 14px 16px;
   font: inherit;
-  color: var(--color-verdure-brand-dark);
+  color: var(--color-verdure-ink);
   background: #fff;
   box-sizing: border-box;
 }

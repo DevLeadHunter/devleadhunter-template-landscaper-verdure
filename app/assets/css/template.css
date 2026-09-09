@@ -7,20 +7,17 @@
   --font-verdure-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 
   --color-verdure-brand: #2d746d;
-  --color-verdure-brand-dark: #003f2e;
   --color-verdure-brand-lime: #bcff83;
-  --color-verdure-brand-accent: #00b67a;
   --color-verdure-surface: #f5f6ef;
-  --color-verdure-surface-alt: #f7f8f6;
+  --color-verdure-surface-alt: #ffffff;
   --color-verdure-ink: #003f2e;
-  --color-verdure-muted: #2d746d;
 }
 
 .verdure-root {
   /* Rythme vertical unique entre les grandes sections de la one-page. */
   --verdure-section-space: clamp(96px, 11vw, 170px);
-  background: #f5f6ef;
-  color: #003f2e;
+  background: var(--color-verdure-surface);
+  color: var(--color-verdure-ink);
   font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
@@ -73,8 +70,8 @@
   min-height: 50px;
   padding: 15px 34px;
   border-radius: 6px;
-  background: #bcff83;
-  color: #003f2e;
+  background: var(--color-verdure-brand);
+  color: #fff;
   font-size: 15px;
   font-weight: 600;
   line-height: 1;
@@ -90,7 +87,7 @@
 
 .verdure-root .eyebrow {
   margin: 0;
-  color: #2d746d;
+  color: var(--color-verdure-brand);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.2px;
@@ -99,7 +96,7 @@
 
 .verdure-root .heading-xl {
   margin: 0;
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: clamp(26px, 6vw, 36px);
   font-weight: 600;
   line-height: 1.2;
@@ -107,7 +104,7 @@
 
 .verdure-root .heading-hero {
   margin: 0;
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: clamp(32px, 8vw, 64px);
   font-weight: 600;
   line-height: 1.15;
@@ -115,7 +112,7 @@
 
 .verdure-root .lead {
   margin: 0;
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: clamp(16px, 1.15vw, 20px);
   font-weight: 400;
   line-height: 1.6;
@@ -123,7 +120,7 @@
 
 .verdure-root .lead-sm {
   margin: 0;
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: clamp(15px, 1.05vw, 19px);
   font-weight: 400;
   line-height: 1.5;
@@ -131,7 +128,7 @@
 
 .verdure-root .body-text {
   margin: 0;
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: 16px;
   font-weight: 400;
   line-height: 1.6;
@@ -139,7 +136,7 @@
 
 .verdure-root .page-shell {
   position: relative;
-  background: #f5f6ef;
+  background: var(--color-verdure-surface);
 }
 
 .verdure-root .page-shell > :not(.page-gradient) {

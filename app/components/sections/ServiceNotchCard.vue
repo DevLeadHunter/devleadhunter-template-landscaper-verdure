@@ -118,7 +118,7 @@ defineProps<{
   height: 15.4%;
   display: flex;
   align-items: center;
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: clamp(18px, 5.2vw, 22px);
   font-weight: 600;
   line-height: 1.2;

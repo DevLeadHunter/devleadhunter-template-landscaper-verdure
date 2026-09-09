@@ -99,7 +99,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
   background: #ffffff;
   display: grid;
   place-items: center;
-  box-shadow: 0 0 0 10px #f5f6ef;
+  box-shadow: 0 0 0 10px var(--color-verdure-surface);
 }
 
 .how__icon img {
@@ -118,7 +118,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
 
 .how__card h3 {
   margin: 0;
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: clamp(20px, 5vw, 26px);
   font-weight: 600;
 }
@@ -151,7 +151,7 @@ const content: ComputedRef<VerdurePageContent> = inject(
     width: 80px;
     height: 80px;
     border-radius: 16px;
-    box-shadow: 0 0 0 12px #f5f6ef;
+    box-shadow: 0 0 0 12px var(--color-verdure-surface);
   }
 
   .how__icon img {

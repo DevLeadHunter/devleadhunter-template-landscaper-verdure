@@ -165,7 +165,7 @@ onBeforeUnmount(() => {
 .site-header {
   position: relative;
   z-index: 60;
-  background: rgb(245 246 239 / 92%);
+  background: color-mix(in srgb, var(--color-verdure-surface) 92%, transparent);
   backdrop-filter: blur(10px);
 }
 
@@ -223,14 +223,14 @@ onBeforeUnmount(() => {
 }
 
 .site-header__name {
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: 16px;
   font-weight: 800;
   letter-spacing: -0.03em;
 }
 
 .site-header__tag {
-  color: #2d746d;
+  color: var(--color-verdure-brand);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -244,14 +244,14 @@ onBeforeUnmount(() => {
 }
 
 .site-header__link {
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
 }
 
 .site-header__link.router-link-active {
-  color: #2d746d;
+  color: var(--color-verdure-brand);
 }
 
 .site-header__burger {
@@ -274,7 +274,7 @@ onBeforeUnmount(() => {
   display: block;
   width: 100%;
   height: 2px;
-  background: #003f2e;
+  background: var(--color-verdure-ink);
   border-radius: 2px;
   transition:
     transform 220ms ease,
@@ -311,13 +311,13 @@ onBeforeUnmount(() => {
   margin-inline: auto;
   padding: 12px;
   border-radius: 18px;
-  background: #f5f6ef;
+  background: var(--color-verdure-surface);
   box-shadow: 0 18px 50px rgb(0 63 46 / 18%);
   animation: panel-in 260ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .site-header__panel-link {
-  color: #003f2e;
+  color: var(--color-verdure-ink);
   font-size: 17px;
   font-weight: 600;
   text-decoration: none;
@@ -328,7 +328,7 @@ onBeforeUnmount(() => {
 .site-header__panel-link:hover,
 .site-header__panel-link.router-link-active {
   background: rgb(45 116 109 / 10%);
-  color: #2d746d;
+  color: var(--color-verdure-brand);
 }
 
 .site-header__panel-cta {
@@ -377,7 +377,7 @@ onBeforeUnmount(() => {
     font-weight: 700;
     letter-spacing: -0.02em;
     text-transform: none;
-    color: #003f2e;
+    color: var(--color-verdure-ink);
   }
 }
 
