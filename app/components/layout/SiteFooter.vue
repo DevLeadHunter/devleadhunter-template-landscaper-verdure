@@ -169,7 +169,7 @@ const socialIcons = [
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    color-mix(in srgb, var(--color-verdure-brand-lime) 40%, transparent),
+    color-mix(in srgb, var(--color-verdure-glow) 45%, transparent),
     transparent 70%
   );
   pointer-events: none;

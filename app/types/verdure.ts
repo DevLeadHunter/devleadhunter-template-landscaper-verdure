@@ -348,7 +348,7 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
       })),
     theme: {
       primary: firstFilled(content.palette?.primary, '#2d746d'),
-      secondary: firstFilled(content.palette?.secondary, '#f5f6ef'),
+      secondary: firstFilled(content.palette?.secondary, '#00b67a'),
       accent: firstFilled(content.palette?.accent, '#bcff83'),
     },
   }
