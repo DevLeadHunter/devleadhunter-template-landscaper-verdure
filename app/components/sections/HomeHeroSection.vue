@@ -12,9 +12,7 @@
           height="70" />
         <div class="hero__heading">
           <h1 class="heading-hero hero-anim hero-anim--title">
-            {{ content.hero.titleLine1 }}
-            <br />
-            {{ content.hero.titleLine2 }}
+            {{ content.hero.title }}
           </h1>
           <p class="lead hero-anim hero-anim--lead">{{ content.hero.lead }}</p>
           <div class="hero-anim hero-anim--cta">

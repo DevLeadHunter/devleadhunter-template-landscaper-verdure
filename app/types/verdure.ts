@@ -1,10 +1,9 @@
 import type { ComputedRef, InjectionKey } from 'vue'
 import type { SiteContent, SiteContentFaqItem, SiteContentService } from './SiteContent'
 
-/** Hero de la one-page (titre sur deux lignes, accroche, CTA). */
+/** Hero de la one-page (titre, accroche, CTA). */
 export interface VerdureHero {
-  titleLine1: string
-  titleLine2: string
+  title: string
   lead: string
   ctaLabel: string
   image: string
@@ -252,8 +251,7 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
     businessName,
     logo,
     hero: {
-      titleLine1: 'Des extérieurs pensés,',
-      titleLine2: 'plantés et entretenus',
+      title: firstFilled(content.heroTitle, 'Des extérieurs pensés, plantés et entretenus'),
       lead: firstFilled(
         content.subtitle,
         `${businessName} conçoit, aménage et entretient vos espaces verts${city ? ` à ${city}` : ''} — avec des pratiques durables et un vrai souci du détail.`,

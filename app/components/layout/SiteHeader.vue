@@ -46,6 +46,13 @@
         </a>
       </nav>
 
+      <a
+        v-if="phone"
+        :href="`tel:${phoneHref}`"
+        class="site-header__phone">
+        {{ phone }}
+      </a>
+
       <button
         type="button"
         class="site-header__burger"
@@ -75,6 +82,13 @@
             class="site-header__panel-link"
             @click="open = false">
             {{ item.label }}
+          </a>
+          <a
+            v-if="phone"
+            :href="`tel:${phoneHref}`"
+            class="site-header__panel-phone"
+            @click="open = false">
+            {{ phone }}
           </a>
           <a
             :href="ctaTarget"
@@ -137,6 +151,12 @@ const ctaTarget: ComputedRef<string> = computed((): string =>
 const ctaLabel: ComputedRef<string> = computed((): string =>
   injectedContent ? injectedContent.value.hero.ctaLabel : 'Make an Appointment',
 )
+
+/** Téléphone du prospect (vide dans le playground) et sa version compacte pour le lien `tel:`. */
+const phone: ComputedRef<string> = computed((): string =>
+  injectedContent ? injectedContent.value.contact.phone : '',
+)
+const phoneHref: ComputedRef<string> = computed((): string => phone.value.replace(/\s+/g, ''))
 
 const open: Ref<boolean> = ref(false)
 const route = useRoute()
@@ -252,6 +272,24 @@ onBeforeUnmount(() => {
 
 .site-header__link.router-link-active {
   color: var(--color-verdure-brand);
+}
+
+.site-header__phone {
+  display: none;
+  color: var(--color-verdure-brand);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-header__panel-phone {
+  color: var(--color-verdure-brand);
+  font-size: 17px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 14px;
+  border-radius: 12px;
 }
 
 .site-header__burger {
@@ -389,6 +427,11 @@ onBeforeUnmount(() => {
 
   .site-header__nav {
     display: flex;
+  }
+
+  .site-header__phone {
+    display: inline-flex;
+    align-items: center;
   }
 
   .site-header__burger,

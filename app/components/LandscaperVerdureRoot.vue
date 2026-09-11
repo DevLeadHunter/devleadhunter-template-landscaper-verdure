@@ -80,18 +80,46 @@ const themeVars: ComputedRef<Record<string, string>> = computed((): Record<strin
   '--color-verdure-brand-lime': parsed.value.theme.accent,
 }))
 
-useHead((): { title: string; htmlAttrs: { lang: string }; link: Record<string, string>[] } => ({
-  title: parsed.value.businessName,
-  htmlAttrs: { lang: 'fr' },
-  link: [
-    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-    {
-      rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap',
-    },
-  ],
-}))
+useHead(
+  (): {
+    title: string
+    htmlAttrs: { lang: string }
+    meta: { name?: string; property?: string; content: string }[]
+    link: Record<string, string>[]
+  } => {
+    const businessName: string = parsed.value.businessName
+    const city: string = parsed.value.contact.city
+    const seoTitle: string = city ? `${businessName} à ${city}` : businessName
+    const description: string = parsed.value.hero.lead
+    const image: string = parsed.value.hero.image
+    const meta: { name?: string; property?: string; content: string }[] = [
+      { property: 'og:type', content: 'website' },
+      { property: 'og:title', content: seoTitle },
+      { property: 'og:site_name', content: businessName },
+    ]
+    if (description) {
+      meta.unshift({ name: 'description', content: description })
+      meta.push({ property: 'og:description', content: description })
+    }
+    // og:image needs an absolute URL: skip the bundled relative default, emit real (uploaded) photos.
+    if (image.startsWith('http')) {
+      meta.push({ property: 'og:image', content: image })
+    }
+    return {
+      title: seoTitle,
+      htmlAttrs: { lang: 'fr' },
+      meta,
+      link: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap',
+        },
+      ],
+    }
+  },
+)
 </script>
 
 <style scoped>
