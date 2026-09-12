@@ -6,10 +6,7 @@
         class="portfolio__heading">
         <p class="eyebrow">{{ content.portfolioHeading.eyebrow }}</p>
         <h2 class="heading-xl">{{ content.portfolioHeading.title }}</h2>
-        <p class="lead-sm">
-          Chaque chantier est mené avec le même soin, qu'il s'agisse d'une création complète ou d'un
-          entretien régulier.
-        </p>
+        <p class="lead-sm">{{ content.portfolioHeading.lead }}</p>
       </div>
       <div
         v-reveal.stagger

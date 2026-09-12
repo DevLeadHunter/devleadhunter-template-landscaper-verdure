@@ -79,7 +79,7 @@ export interface VerdurePageContent {
   about: VerdureAbout
   howHeading: { eyebrow: string; title: string }
   how: VerdureStep[]
-  portfolioHeading: { eyebrow: string; title: string }
+  portfolioHeading: { eyebrow: string; title: string; lead: string }
   portfolio: VerdurePortfolioItem[]
   faqHeading: { eyebrow: string; title: string }
   faqs: SiteContentFaqItem[]
@@ -316,6 +316,10 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
     portfolioHeading: {
       eyebrow: 'Réalisations',
       title: firstFilled(content.portfolioHeading, 'Nos derniers chantiers'),
+      lead: firstFilled(
+        content.portfolioLead,
+        "Chaque chantier est mené avec le même soin, qu'il s'agisse d'une création complète ou d'un entretien régulier.",
+      ),
     },
     portfolio,
     faqHeading: {
@@ -343,11 +347,17 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
     contactHeading: {
       eyebrow: 'Contact',
       title: firstFilled(content.contactHeading, 'Demandez votre devis gratuit'),
-      lead: 'Appelez-nous, écrivez-nous ou laissez vos coordonnées : nous revenons vers vous sous 48 h avec un premier avis et un rendez-vous de visite.',
+      lead: firstFilled(
+        content.contactLead,
+        'Appelez-nous, écrivez-nous ou laissez vos coordonnées : nous revenons vers vous sous 48 h avec un premier avis et un rendez-vous de visite.',
+      ),
     },
     cta: {
-      title: 'Parlons de votre jardin',
-      lead: `Un projet d'aménagement ou besoin d'un entretien régulier${city ? ` à ${city}` : ''} ? Décrivez-nous votre extérieur, nous revenons vers vous sous 48 h.`,
+      title: firstFilled(content.ctaTitle, 'Parlons de votre jardin'),
+      lead: firstFilled(
+        content.ctaLead,
+        `Un projet d'aménagement ou besoin d'un entretien régulier${city ? ` à ${city}` : ''} ? Décrivez-nous votre extérieur, nous revenons vers vous sous 48 h.`,
+      ),
       label: firstFilled(content.ctaCallLabel, 'Être rappelé'),
       background: firstFilled(content.images?.ctaBackground, '/images/verdure/image-import-3.jpg'),
     },
