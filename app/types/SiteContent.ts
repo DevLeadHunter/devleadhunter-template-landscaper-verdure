@@ -9,6 +9,7 @@ export type {
   SiteContentService,
   SiteContentReview,
   SiteContentFaqItem,
+  SiteContentStep,
   SiteContentGalleryImage,
   SiteContentOpeningHours,
 } from '@devleadhunter/website-content'

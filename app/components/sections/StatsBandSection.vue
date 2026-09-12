@@ -1,5 +1,7 @@
 <template>
-  <section class="stats">
+  <section
+    v-if="content.stats.length > 0"
+    class="stats">
     <div
       v-reveal.stagger
       class="container-eco stats__grid">

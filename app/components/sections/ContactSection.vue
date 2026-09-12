@@ -21,7 +21,22 @@
             aria-hidden="true"
             v-html="point.icon" />
           <h3>{{ point.label }}</h3>
-          <p class="body-text">{{ point.value }}</p>
+          <ul
+            v-if="point.hours"
+            class="contact__hours">
+            <li
+              v-for="slot in point.hours"
+              :key="slot.day"
+              class="contact__hours-row">
+              <span class="contact__hours-day">{{ slot.day }}</span>
+              <span class="contact__hours-time">{{ slot.hours }}</span>
+            </li>
+          </ul>
+          <p
+            v-else
+            class="body-text">
+            {{ point.value }}
+          </p>
         </article>
       </div>
 
@@ -38,6 +53,7 @@
       </div>
 
       <form
+        v-if="hasEmail"
         v-reveal="{ type: 'up', delay: 100 }"
         class="contact__form"
         @submit.prevent="sendMailto">
@@ -93,6 +109,20 @@
           Envoyer ma demande
         </button>
       </form>
+
+      <div
+        v-else-if="content.contact.phone"
+        v-reveal="{ type: 'up', delay: 100 }"
+        class="contact__call">
+        <p class="body-text">
+          Le plus simple pour demander un devis : un appel, avec une réponse directe.
+        </p>
+        <a
+          :href="`tel:${content.contact.phone}`"
+          class="btn-eco">
+          Appeler le {{ content.contact.phone }}
+        </a>
+      </div>
     </div>
   </section>
 </template>
@@ -102,7 +132,7 @@
 // L'envoi ouvre un email pré-rempli vers le prospect (aucun backend requis).
 import type { ComputedRef } from 'vue'
 import { computed, inject, reactive } from 'vue'
-import type { VerdurePageContent } from '../../types/verdure'
+import type { VerdureContact, VerdurePageContent } from '../../types/verdure'
 import { buildVerdureContent, VERDURE_CONTENT_KEY } from '../../types/verdure'
 
 /** Contenu de la page fourni par la racine (défauts éditoriaux FR hors racine). */
@@ -123,17 +153,45 @@ const form: { name: string; email: string; phone: string; address: string; notes
     notes: '',
   })
 
-/** Cartes de coordonnées réellement renseignées (zone, téléphone, email). */
-const contactPoints: ComputedRef<{ label: string; value: string; icon: string }[]> = computed(
-  (): { label: string; value: string; icon: string }[] => {
-    const points: { label: string; value: string; icon: string }[] = [
-      { label: 'Zone d’intervention', value: content.value.contact.area, icon: HOME_ICON },
-      { label: 'Téléphone', value: content.value.contact.phone, icon: PHONE_ICON },
-      { label: 'Email', value: content.value.contact.email, icon: MAIL_ICON },
-    ]
-    return points.filter((point: { value: string }): boolean => point.value.length > 0)
-  },
+/** Une carte de coordonnées : soit une valeur simple (zone, téléphone, email), soit des horaires. */
+interface ContactPoint {
+  label: string
+  icon: string
+  value?: string
+  hours?: { day: string; hours: string }[]
+}
+
+/** Vrai quand un email de contact est renseigné (pilote l'affichage du formulaire). */
+const hasEmail: ComputedRef<boolean> = computed(
+  (): boolean => content.value.contact.email.length > 0,
 )
+
+/**
+ * Cartes de coordonnées affichées : la zone d'intervention (toujours), le canal de contact
+ * (le téléphone, ou l'email à sa place quand il n'y a pas de téléphone), et les horaires dès qu'ils
+ * sont connus (sinon l'email en secours). On n'affiche jamais de carte vide.
+ */
+const contactPoints: ComputedRef<ContactPoint[]> = computed((): ContactPoint[] => {
+  const contact: VerdureContact = content.value.contact
+  const points: ContactPoint[] = []
+  if (contact.area.length > 0) {
+    points.push({ label: 'Zone d’intervention', value: contact.area, icon: HOME_ICON })
+  }
+  if (contact.phone.length > 0) {
+    points.push({ label: 'Téléphone', value: contact.phone, icon: PHONE_ICON })
+  } else if (contact.email.length > 0) {
+    points.push({ label: 'Email', value: contact.email, icon: MAIL_ICON })
+  }
+  const hours: { day: string; hours: string }[] = contact.openingHours.filter(
+    (slot: { day: string; hours: string }): boolean => slot.day.length > 0 && slot.hours.length > 0,
+  )
+  if (hours.length > 0) {
+    points.push({ label: 'Horaires', hours, icon: CLOCK_ICON })
+  } else if (contact.phone.length > 0 && contact.email.length > 0) {
+    points.push({ label: 'Email', value: contact.email, icon: MAIL_ICON })
+  }
+  return points
+})
 
 /** Carte embarquée centrée sur la zone du prospect (aucune clé API requise). */
 const mapSrc: ComputedRef<string> = computed((): string => {
@@ -166,6 +224,7 @@ function sendMailto(): void {
 const HOME_ICON: string = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6h-5v6H4a1 1 0 0 1-1-1v-9.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`
 const PHONE_ICON: string = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 3.5h3.2l1.6 4.4-2.1 1.2a11.5 11.5 0 0 0 4.7 4.7l1.2-2.1 4.4 1.6v3.2a2 2 0 0 1-2 2A14.5 14.5 0 0 1 4.5 7.5a2 2 0 0 1 4-4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`
 const MAIL_ICON: string = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="m3.5 7 8.5 6.5L20.5 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+const CLOCK_ICON: string = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7.5V12l3.2 1.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
 </script>
 
 <style scoped>
@@ -196,6 +255,7 @@ const MAIL_ICON: string = `<svg width="32" height="32" viewBox="0 0 24 24" fill=
   display: grid;
   gap: 32px;
   grid-template-columns: 1fr;
+  align-items: start;
   text-align: center;
 }
 
@@ -232,6 +292,45 @@ const MAIL_ICON: string = `<svg width="32" height="32" viewBox="0 0 24 24" fill=
   margin: 0;
   font-size: 15px;
   line-height: 1.5;
+}
+
+.contact__hours {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  max-width: 240px;
+  font-size: 14px;
+}
+
+.contact__hours-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.contact__hours-day {
+  text-transform: capitalize;
+  color: color-mix(in srgb, var(--color-verdure-ink) 65%, transparent);
+}
+
+.contact__hours-time {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--color-verdure-ink);
+}
+
+.contact__call {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+  text-align: center;
+}
+
+.contact__call .body-text {
+  max-width: 460px;
 }
 
 .contact__map {

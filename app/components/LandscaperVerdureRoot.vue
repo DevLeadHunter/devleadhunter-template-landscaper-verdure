@@ -18,6 +18,9 @@
       <section id="portfolio">
         <HomePortfolioSection v-bind="editableAttrs(props.content._editable?.portfolio)" />
       </section>
+      <section id="reviews">
+        <HomeReviewsSection v-bind="editableAttrs(props.content._editable?.reviews)" />
+      </section>
       <FaqsSection v-bind="editableAttrs(props.content._editable?.faq)" />
       <CtaSection v-bind="editableAttrs(props.content._editable?.contact)" />
       <section id="contact">
@@ -47,6 +50,7 @@ import HomeAboutSection from './sections/HomeAboutSection.vue'
 import StatsBandSection from './sections/StatsBandSection.vue'
 import HomeHowSection from './sections/HomeHowSection.vue'
 import HomePortfolioSection from './sections/HomePortfolioSection.vue'
+import HomeReviewsSection from './sections/HomeReviewsSection.vue'
 import FaqsSection from './sections/FaqsSection.vue'
 import CtaSection from './sections/CtaSection.vue'
 import ContactSection from './sections/ContactSection.vue'

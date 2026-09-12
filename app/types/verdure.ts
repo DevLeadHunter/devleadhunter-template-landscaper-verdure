@@ -62,6 +62,13 @@ export interface VerdureStat {
   value: string
 }
 
+/** Un avis client affiché dans la section avis. */
+export interface VerdureReview {
+  author: string
+  rating: number
+  text: string
+}
+
 /** Contenu complet consommé par les sections de la template. */
 export interface VerdurePageContent {
   businessName: string
@@ -76,6 +83,8 @@ export interface VerdurePageContent {
   portfolio: VerdurePortfolioItem[]
   faqHeading: { eyebrow: string; title: string }
   faqs: SiteContentFaqItem[]
+  reviewsHeading: { eyebrow: string; title: string }
+  reviews: VerdureReview[]
   cta: { title: string; lead: string; label: string; background: string }
   stats: VerdureStat[]
   contactHeading: { eyebrow: string; title: string; lead: string }
@@ -164,7 +173,7 @@ const DEFAULT_HOW: VerdureStep[] = [
     step: 'Étape 2',
     title: 'Devis détaillé',
     description:
-      'Vous recevez une proposition claire : prestations, végétaux ou matériaux, délais et budget — sans surprise.',
+      'Vous recevez une proposition claire : prestations, végétaux ou matériaux, délais et budget, sans surprise.',
   },
   {
     step: 'Étape 3',
@@ -221,7 +230,7 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
         index: number,
       ): VerdurePortfolioItem => ({
         category: firstFilled(item.category, 'Réalisation'),
-        title: firstFilled(item.title, 'Aménagement complet d’un jardin — avant, pendant, après'),
+        title: firstFilled(item.title, 'Aménagement complet d’un jardin : avant, pendant, après'),
         image: firstFilled(item.image),
         accent: index === 0,
       }),
@@ -247,6 +256,24 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
   const faqs: SiteContentFaqItem[] =
     (content.faq ?? []).length > 0 ? (content.faq ?? []) : DEFAULT_FAQS
 
+  const editableSteps: VerdureStep[] = (content.steps ?? [])
+    .filter((step: { title?: string }): boolean => firstFilled(step.title).length > 0)
+    .map((step: { title?: string; description?: string }, index: number): VerdureStep => ({
+      step: `Étape ${index + 1}`,
+      title: firstFilled(step.title),
+      description: firstFilled(step.description),
+    }))
+  const how: VerdureStep[] = editableSteps.length > 0 ? editableSteps : DEFAULT_HOW
+
+  const reviews: VerdureReview[] = (content.reviews ?? [])
+    .filter((review: { text?: string }): boolean => firstFilled(review.text).length > 0)
+    .slice(0, 6)
+    .map((review: { author?: string; rating?: number; text?: string }): VerdureReview => ({
+      author: firstFilled(review.author, 'Client'),
+      rating: typeof review.rating === 'number' && review.rating > 0 ? review.rating : 5,
+      text: firstFilled(review.text),
+    }))
+
   return {
     businessName,
     logo,
@@ -254,7 +281,7 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
       title: firstFilled(content.heroTitle, 'Des extérieurs pensés, plantés et entretenus'),
       lead: firstFilled(
         content.subtitle,
-        `${businessName} conçoit, aménage et entretient vos espaces verts${city ? ` à ${city}` : ''} — avec des pratiques durables et un vrai souci du détail.`,
+        `${businessName} conçoit, aménage et entretient vos espaces verts${city ? ` à ${city}` : ''}, avec des pratiques durables et un vrai souci du détail.`,
       ),
       ctaLabel: firstFilled(content.ctaQuoteLabel, 'Demander un devis gratuit'),
       image: firstFilled(content.heroImage, '/images/verdure/image-import-27.jpg'),
@@ -262,24 +289,30 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
     servicesHeading: {
       eyebrow: 'Nos prestations',
       title: firstFilled(content.servicesHeading, 'Un seul artisan pour tout votre extérieur'),
-      lead: 'Du dessin du jardin à son entretien régulier : un interlocuteur unique, un matériel adapté et des végétaux choisis pour votre terrain.',
+      lead: firstFilled(
+        content.servicesLead,
+        'Du dessin du jardin à son entretien régulier : un interlocuteur unique, un matériel adapté et des végétaux choisis pour votre terrain.',
+      ),
     },
     services,
     about: {
       heading: firstFilled(content.aboutHeading, `Qui est ${businessName} ?`),
       text: firstFilled(
         content.about,
-        `Paysagiste ${city ? `à ${city}` : 'local'}, nous accompagnons particuliers et professionnels dans la création et l'entretien de leurs espaces verts. Chaque projet commence par une visite et un devis gratuit — et se termine par un extérieur dont on prend plaisir à profiter.`,
+        `Paysagiste ${city ? `à ${city}` : 'local'}, nous accompagnons particuliers et professionnels dans la création et l'entretien de leurs espaces verts. Chaque projet commence par une visite et un devis gratuit, et se termine par un extérieur dont on prend plaisir à profiter.`,
       ),
       checks: [
         'Devis gratuit et sans engagement',
-        'Entreprise assurée — travail garanti',
+        'Entreprise assurée, travail garanti',
         'Pratiques durables et éco-responsables',
       ],
       image: firstFilled(content.aboutImage, '/images/verdure/image-import-19.jpg'),
     },
-    howHeading: { eyebrow: 'Notre méthode', title: 'Comment ça se passe ?' },
-    how: DEFAULT_HOW,
+    howHeading: {
+      eyebrow: 'Notre méthode',
+      title: firstFilled(content.stepsHeading, 'Comment ça se passe ?'),
+    },
+    how,
     portfolioHeading: {
       eyebrow: 'Réalisations',
       title: firstFilled(content.portfolioHeading, 'Nos derniers chantiers'),
@@ -290,25 +323,23 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
       title: firstFilled(content.faqHeading, 'Vos questions, nos réponses'),
     },
     faqs,
-    stats: (content.trustItems ?? []).some(
-      (item: { value?: string; label?: string }): boolean =>
-        firstFilled(item.value, item.label).length > 0,
-    )
-      ? (content.trustItems ?? [])
-          .filter(
-            (item: { value?: string; label?: string }): boolean =>
-              firstFilled(item.value, item.label).length > 0,
-          )
-          .slice(0, 3)
-          .map((item: { value?: string; label?: string }): VerdureStat => ({
-            value: firstFilled(item.value),
-            label: firstFilled(item.label),
-          }))
-      : [
-          { label: 'Jardins entretenus', value: '180+' },
-          { label: 'Clients satisfaits', value: '100+' },
-          { label: 'Années d’expérience', value: '10 ans' },
-        ],
+    reviewsHeading: {
+      eyebrow: 'Avis clients',
+      title: firstFilled(content.reviewsHeading, 'Ils nous ont fait confiance'),
+    },
+    reviews,
+    // Bandeau de chiffres : uniquement des données réelles (note Google, nombre d'avis, repères
+    // qualitatifs seedés par l'API). Jamais de chiffres inventés — la bande se masque si vide.
+    stats: (content.trustItems ?? [])
+      .filter(
+        (item: { value?: string; label?: string }): boolean =>
+          firstFilled(item.value, item.label).length > 0,
+      )
+      .slice(0, 3)
+      .map((item: { value?: string; label?: string }): VerdureStat => ({
+        value: firstFilled(item.value),
+        label: firstFilled(item.label),
+      })),
     contactHeading: {
       eyebrow: 'Contact',
       title: firstFilled(content.contactHeading, 'Demandez votre devis gratuit'),
