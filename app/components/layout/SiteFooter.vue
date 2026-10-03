@@ -63,6 +63,7 @@
     </div>
     <div class="container-eco container-eco--wide site-footer__bottom">
       <p>© {{ currentYear }} {{ brandName }} — Tous droits réservés.</p>
+      <p v-if="professionalLicense">{{ professionalLicense }}</p>
     </div>
   </footer>
 </template>
@@ -131,6 +132,10 @@ const socialLinks: ComputedRef<{ label: string; url: string; svg: string }[]> = 
 )
 
 const currentYear: number = new Date().getFullYear()
+
+const professionalLicense: ComputedRef<string> = computed((): string =>
+  injectedContent ? injectedContent.value.professionalLicense : '',
+)
 
 const socialIcons = [
   {

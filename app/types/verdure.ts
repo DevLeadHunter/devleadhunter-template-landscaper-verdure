@@ -1,5 +1,6 @@
 import type { ComputedRef, InjectionKey } from 'vue'
 import type { SiteContent, SiteContentFaqItem, SiteContentService } from './SiteContent'
+import { professionalLicenseLine } from '@devleadhunter/website-content'
 
 /** Hero de la one-page (titre, accroche, CTA). */
 export interface VerdureHero {
@@ -90,6 +91,7 @@ export interface VerdurePageContent {
   contactHeading: { eyebrow: string; title: string; lead: string }
   contact: VerdureContact
   footerServices: string[]
+  professionalLicense: string
   social: VerdureSocialLink[]
   theme: { primary: string; secondary: string; accent: string }
 }
@@ -156,9 +158,9 @@ const DEFAULT_FAQS: SiteContentFaqItem[] = [
       'Absolument. Nous privilégions les traitements naturels, le paillage, des végétaux adaptés au climat local et l’évacuation responsable des déchets verts.',
   },
   {
-    question: 'Puis-je bénéficier du crédit d’impôt pour l’entretien de jardin ?',
+    question: 'Intervenez-vous toute l’année ?',
     answer:
-      'Oui, les prestations d’entretien courant (tonte, taille de haies…) ouvrent droit au crédit d’impôt services à la personne de 50 % dans la limite du plafond en vigueur. Nous vous fournissons l’attestation.',
+      'Oui. Créations et aménagements à la belle saison, plantations et tailles à l’automne, entretien et préparation des massifs le reste de l’année : le calendrier s’adapte à votre jardin.',
   },
 ]
 
@@ -375,6 +377,7 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
       zones: (content.zones ?? []).filter((zone: string): boolean => zone.trim().length > 0),
     },
     footerServices: services.map((service: VerdureService): string => service.title),
+    professionalLicense: professionalLicenseLine(content),
     social: (content.social ?? [])
       .filter(
         (link: { network?: string; url?: string }): boolean =>

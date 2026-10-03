@@ -19,6 +19,11 @@
         <p class="stats__value">{{ item.value }}</p>
       </article>
     </div>
+    <p
+      v-if="content.professionalLicense"
+      class="container-eco stats__license">
+      {{ content.professionalLicense }}
+    </p>
   </section>
 </template>
 
@@ -65,6 +70,17 @@ const content: ComputedRef<VerdurePageContent> = inject(
   height: 36px;
   display: block;
   object-fit: contain;
+}
+
+.stats__license {
+  margin: 28px auto 0;
+  max-width: 1140px;
+  color: var(--color-verdure-brand);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: right;
 }
 
 .stats__label {
