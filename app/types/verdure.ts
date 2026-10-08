@@ -1,6 +1,6 @@
 import type { ComputedRef, InjectionKey } from 'vue'
 import type { SiteContent, SiteContentFaqItem, SiteContentService } from './SiteContent'
-import { professionalLicenseLine } from '@devleadhunter/website-content'
+import { professionalLicenseLine, regionalLabel } from '@devleadhunter/website-content'
 
 /** Hero de la one-page (titre, accroche, CTA). */
 export interface VerdureHero {
@@ -74,6 +74,7 @@ export interface VerdureReview {
 export interface VerdurePageContent {
   businessName: string
   logo: string
+  country: string
   hero: VerdureHero
   servicesHeading: { eyebrow: string; title: string; lead: string }
   services: VerdureService[]
@@ -141,7 +142,7 @@ const DEFAULT_SERVICES: VerdureService[] = [
   },
 ]
 
-const DEFAULT_FAQS: SiteContentFaqItem[] = [
+const DEFAULT_FAQS: Required<SiteContentFaqItem>[] = [
   {
     question: 'À quelle fréquence intervenez-vous pour l’entretien ?',
     answer:
@@ -256,7 +257,12 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
         ]
 
   const faqs: SiteContentFaqItem[] =
-    (content.faq ?? []).length > 0 ? (content.faq ?? []) : DEFAULT_FAQS
+    (content.faq ?? []).length > 0
+      ? (content.faq ?? [])
+      : DEFAULT_FAQS.map((item: Required<SiteContentFaqItem>): SiteContentFaqItem => ({
+          question: regionalLabel(content, item.question),
+          answer: regionalLabel(content, item.answer),
+        }))
 
   const editableSteps: VerdureStep[] = (content.steps ?? [])
     .filter((step: { title?: string }): boolean => firstFilled(step.title).length > 0)
@@ -265,7 +271,19 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
       title: firstFilled(step.title),
       description: firstFilled(step.description),
     }))
-  const how: VerdureStep[] = editableSteps.length > 0 ? editableSteps : DEFAULT_HOW
+  const how: VerdureStep[] =
+    editableSteps.length > 0
+      ? editableSteps
+      : DEFAULT_HOW.map((step: VerdureStep): VerdureStep => ({
+          step: step.step,
+          title: regionalLabel(content, step.title),
+          description: regionalLabel(content, step.description),
+        }))
+
+  const defaultAboutClosingSentence: string = regionalLabel(
+    content,
+    'Chaque projet commence par une visite et un devis gratuit, et se termine par un extérieur dont on prend plaisir à profiter.',
+  )
 
   const reviews: VerdureReview[] = (content.reviews ?? [])
     .filter((review: { text?: string }): boolean => firstFilled(review.text).length > 0)
@@ -279,18 +297,25 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
   return {
     businessName,
     logo,
+    country: firstFilled(content.country),
     hero: {
       title: firstFilled(content.heroTitle, 'Des extérieurs pensés, plantés et entretenus'),
       lead: firstFilled(
         content.subtitle,
         `${businessName} conçoit, aménage et entretient vos espaces verts${city ? ` à ${city}` : ''}, avec des pratiques durables et un vrai souci du détail.`,
       ),
-      ctaLabel: firstFilled(content.ctaQuoteLabel, 'Demander un devis gratuit'),
+      ctaLabel: firstFilled(
+        content.ctaQuoteLabel,
+        regionalLabel(content, 'Demander un devis gratuit'),
+      ),
       image: firstFilled(content.heroImage, '/images/verdure/image-import-27.jpg'),
     },
     servicesHeading: {
       eyebrow: 'Nos prestations',
-      title: firstFilled(content.servicesHeading, 'Un seul artisan pour tout votre extérieur'),
+      title: firstFilled(
+        content.servicesHeading,
+        regionalLabel(content, 'Un seul artisan pour tout votre extérieur'),
+      ),
       lead: firstFilled(
         content.servicesLead,
         'Du dessin du jardin à son entretien régulier : un interlocuteur unique, un matériel adapté et des végétaux choisis pour votre terrain.',
@@ -301,10 +326,10 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
       heading: firstFilled(content.aboutHeading, `Qui est ${businessName} ?`),
       text: firstFilled(
         content.about,
-        `Paysagiste ${city ? `à ${city}` : 'local'}, nous accompagnons particuliers et professionnels dans la création et l'entretien de leurs espaces verts. Chaque projet commence par une visite et un devis gratuit, et se termine par un extérieur dont on prend plaisir à profiter.`,
+        `Paysagiste ${city ? `à ${city}` : 'local'}, nous accompagnons particuliers et professionnels dans la création et l'entretien de leurs espaces verts. ${defaultAboutClosingSentence}`,
       ),
       checks: [
-        'Devis gratuit et sans engagement',
+        regionalLabel(content, 'Devis gratuit et sans engagement'),
         'Entreprise assurée, travail garanti',
         'Pratiques durables et éco-responsables',
       ],
@@ -348,7 +373,10 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
       })),
     contactHeading: {
       eyebrow: 'Contact',
-      title: firstFilled(content.contactHeading, 'Demandez votre devis gratuit'),
+      title: firstFilled(
+        content.contactHeading,
+        regionalLabel(content, 'Demandez votre devis gratuit'),
+      ),
       lead: firstFilled(
         content.contactLead,
         'Appelez-nous, écrivez-nous ou laissez vos coordonnées : nous revenons vers vous sous 48 h avec un premier avis et un rendez-vous de visite.',

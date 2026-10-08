@@ -19,7 +19,7 @@
               v-if="content.contact.email"
               :href="`mailto:${content.contact.email}`"
               class="btn-eco cta__btn">
-              Écrire un email
+              {{ regionalLabel(content, 'Écrire un email') }}
             </a>
           </div>
         </div>
@@ -32,6 +32,7 @@
 import type { ComputedRef } from 'vue'
 import { computed, inject } from 'vue'
 import type { VerdurePageContent } from '../../types/verdure'
+import { regionalLabel } from '@devleadhunter/website-content'
 import { buildVerdureContent, VERDURE_CONTENT_KEY } from '../../types/verdure'
 
 /** Contenu de la page fourni par la racine (défauts éditoriaux FR hors racine). */

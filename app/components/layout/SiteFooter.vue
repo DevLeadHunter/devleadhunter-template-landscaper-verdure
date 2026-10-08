@@ -36,7 +36,7 @@
               Téléphone : {{ phone }}
               <br />
             </template>
-            <template v-if="email">Email : {{ email }}</template>
+            <template v-if="email">{{ emailLabel }} {{ email }}</template>
           </p>
         </div>
         <div>
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div class="container-eco container-eco--wide site-footer__bottom">
-      <p>© {{ currentYear }} {{ brandName }} — Tous droits réservés.</p>
+      <p>{{ copyrightLine }}</p>
       <p v-if="professionalLicense">{{ professionalLicense }}</p>
     </div>
   </footer>
@@ -72,11 +72,14 @@
 import type { ComputedRef } from 'vue'
 import { computed, inject } from 'vue'
 import type { VerdurePageContent, VerdureSocialLink } from '../../types/verdure'
+import { regionalLabel } from '@devleadhunter/website-content'
 import { VERDURE_CONTENT_KEY } from '../../types/verdure'
 import { site } from '../../data/site'
 
 /** Contenu one-page fourni par la racine ; absent dans le playground multi-pages. */
 const injectedContent: ComputedRef<VerdurePageContent> | null = inject(VERDURE_CONTENT_KEY, null)
+
+const FINAL_PUNCTUATION: RegExp = /[.!?]$/
 
 const brandName: ComputedRef<string> = computed((): string =>
   injectedContent ? injectedContent.value.businessName : site.name,
@@ -97,6 +100,10 @@ const phone: ComputedRef<string> = computed((): string =>
 
 const email: ComputedRef<string> = computed((): string =>
   injectedContent ? injectedContent.value.contact.email : site.email,
+)
+
+const emailLabel: ComputedRef<string> = computed((): string =>
+  regionalLabel(injectedContent ? injectedContent.value : {}, 'Email :'),
 )
 
 const navItems: ComputedRef<{ label: string; to: string }[]> = computed(
@@ -132,6 +139,12 @@ const socialLinks: ComputedRef<{ label: string; url: string; svg: string }[]> = 
 )
 
 const currentYear: number = new Date().getFullYear()
+
+const copyrightLine: ComputedRef<string> = computed((): string => {
+  const owner: string = `© ${currentYear} ${brandName.value}`.trim()
+  const ownerSentence: string = FINAL_PUNCTUATION.test(owner) ? owner : `${owner}.`
+  return `${ownerSentence} Tous droits réservés.`
+})
 
 const professionalLicense: ComputedRef<string> = computed((): string =>
   injectedContent ? injectedContent.value.professionalLicense : '',

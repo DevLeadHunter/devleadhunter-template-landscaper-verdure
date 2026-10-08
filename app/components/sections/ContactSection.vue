@@ -45,7 +45,7 @@
         v-reveal
         class="contact__map">
         <iframe
-          :title="`Carte — ${content.contact.area}`"
+          :title="`Carte : ${content.contact.area}`"
           :src="mapSrc"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
@@ -68,13 +68,13 @@
             required />
         </label>
         <label>
-          <span>EMAIL</span>
+          <span>{{ regionalLabel(content, 'EMAIL') }}</span>
           <input
             v-model="form.email"
             type="email"
             name="email"
             autocomplete="email"
-            placeholder="Votre adresse email"
+            :placeholder="regionalLabel(content, 'Votre adresse email')"
             required />
         </label>
         <label>
@@ -115,7 +115,12 @@
         v-reveal="{ type: 'up', delay: 100 }"
         class="contact__call">
         <p class="body-text">
-          Le plus simple pour demander un devis : un appel, avec une réponse directe.
+          {{
+            regionalLabel(
+              content,
+              'Le plus simple pour demander un devis : un appel, avec une réponse directe.',
+            )
+          }}
         </p>
         <a
           :href="`tel:${content.contact.phone}`"
@@ -133,6 +138,7 @@
 import type { ComputedRef } from 'vue'
 import { computed, inject, reactive } from 'vue'
 import type { VerdureContact, VerdurePageContent } from '../../types/verdure'
+import { regionalLabel } from '@devleadhunter/website-content'
 import { buildVerdureContent, VERDURE_CONTENT_KEY } from '../../types/verdure'
 
 /** Contenu de la page fourni par la racine (défauts éditoriaux FR hors racine). */
@@ -177,10 +183,11 @@ const contactPoints: ComputedRef<ContactPoint[]> = computed((): ContactPoint[] =
   if (contact.area.length > 0) {
     points.push({ label: 'Zone d’intervention', value: contact.area, icon: HOME_ICON })
   }
+  const emailLabel: string = regionalLabel(content.value, 'Email')
   if (contact.phone.length > 0) {
     points.push({ label: 'Téléphone', value: contact.phone, icon: PHONE_ICON })
   } else if (contact.email.length > 0) {
-    points.push({ label: 'Email', value: contact.email, icon: MAIL_ICON })
+    points.push({ label: emailLabel, value: contact.email, icon: MAIL_ICON })
   }
   const hours: { day: string; hours: string }[] = contact.openingHours.filter(
     (slot: { day: string; hours: string }): boolean => slot.day.length > 0 && slot.hours.length > 0,
@@ -188,7 +195,7 @@ const contactPoints: ComputedRef<ContactPoint[]> = computed((): ContactPoint[] =
   if (hours.length > 0) {
     points.push({ label: 'Horaires', hours, icon: CLOCK_ICON })
   } else if (contact.phone.length > 0 && contact.email.length > 0) {
-    points.push({ label: 'Email', value: contact.email, icon: MAIL_ICON })
+    points.push({ label: emailLabel, value: contact.email, icon: MAIL_ICON })
   }
   return points
 })
@@ -204,18 +211,19 @@ const mapSrc: ComputedRef<string> = computed((): string => {
  * Ouvre un email pré-rempli vers le prospect avec la demande du visiteur.
  */
 function sendMailto(): void {
+  const requestTitle: string = regionalLabel(content.value, 'Demande de devis')
   const subject: string = encodeURIComponent(
-    form.name ? `Demande de devis — ${form.name}` : 'Demande de devis',
+    form.name ? `${requestTitle} de ${form.name}` : requestTitle,
   )
   const body: string = encodeURIComponent(
     [
       `Nom : ${form.name}`,
-      `Email : ${form.email}`,
-      `Téléphone : ${form.phone || '—'}`,
-      `Adresse du jardin : ${form.address || '—'}`,
+      `${regionalLabel(content.value, 'Email :')} ${form.email}`,
+      `Téléphone : ${form.phone || 'non renseigné'}`,
+      `Adresse du jardin : ${form.address || 'non renseignée'}`,
       '',
       'Projet :',
-      form.notes || '—',
+      form.notes || 'non renseigné',
     ].join('\n'),
   )
   window.location.href = `mailto:${content.value.contact.email}?subject=${subject}&body=${body}`

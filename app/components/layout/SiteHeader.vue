@@ -4,7 +4,7 @@
       <a
         :href="homeTarget"
         class="site-header__logo"
-        :aria-label="`${brandFirst} ${brandRest} — accueil`">
+        :aria-label="`${brandFirst} ${brandRest}, accueil`">
         <img
           v-if="brandLogo"
           :src="brandLogo"
