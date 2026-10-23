@@ -10,6 +10,7 @@
       <section id="services">
         <HomeServicesSection v-bind="editableAttrs(props.content._editable?.services)" />
       </section>
+      <HomeTaxCreditSection v-bind="editableAttrs(props.content._editable?.taxCredit)" />
       <section id="about">
         <HomeAboutSection v-bind="editableAttrs(props.content._editable?.about)" />
       </section>
@@ -46,6 +47,7 @@ import SiteHeader from './layout/SiteHeader.vue'
 import SiteFooter from './layout/SiteFooter.vue'
 import HomeHeroSection from './sections/HomeHeroSection.vue'
 import HomeServicesSection from './sections/HomeServicesSection.vue'
+import HomeTaxCreditSection from './sections/HomeTaxCreditSection.vue'
 import HomeAboutSection from './sections/HomeAboutSection.vue'
 import StatsBandSection from './sections/StatsBandSection.vue'
 import HomeHowSection from './sections/HomeHowSection.vue'

@@ -32,6 +32,14 @@ export interface VerdureStep {
   description: string
 }
 
+/** Section « crédit d'impôt » (services à la personne) ; masquée tant que le titre est vide. */
+export interface VerdureTaxCredit {
+  heading: string
+  lead: string
+  points: string[]
+  note: string
+}
+
 /** Une réalisation du portfolio. */
 export interface VerdurePortfolioItem {
   category: string
@@ -78,6 +86,7 @@ export interface VerdurePageContent {
   hero: VerdureHero
   servicesHeading: { eyebrow: string; title: string; lead: string }
   services: VerdureService[]
+  taxCredit: VerdureTaxCredit
   about: VerdureAbout
   howHeading: { eyebrow: string; title: string }
   how: VerdureStep[]
@@ -334,6 +343,15 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
         'Pratiques durables et éco-responsables',
       ],
       image: firstFilled(content.aboutImage, '/images/verdure/image-import-19.jpg'),
+    },
+    // Jamais de défaut : la section n'existe que pour une entreprise déclarée services à la personne.
+    taxCredit: {
+      heading: firstFilled(content.taxCreditHeading),
+      lead: firstFilled(content.taxCreditLead),
+      points: (content.taxCreditPoints ?? []).filter(
+        (point: string): boolean => point.trim().length > 0,
+      ),
+      note: firstFilled(content.taxCreditNote),
     },
     howHeading: {
       eyebrow: 'Notre méthode',

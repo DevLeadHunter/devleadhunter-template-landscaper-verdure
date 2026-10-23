@@ -21,6 +21,18 @@ const previewContent: SiteContent = {
     { day: 'Lundi – Vendredi', hours: '8h00 – 18h30' },
     { day: 'Samedi', hours: '9h00 – 12h30' },
   ],
+  // Section crédit d'impôt : remplie par l'API pour une entreprise déclarée services à la personne.
+  taxCreditHeading: 'Votre entretien de jardin à moitié prix',
+  taxCreditLead:
+    'Les Jardins d’Émeraude est déclaré organisme de services à la personne : la moitié de vos travaux de jardinage vous est remboursée par l’État sous forme de crédit d’impôt, que vous soyez imposable ou non.',
+  taxCreditPoints: [
+    '50 % de la facture remboursés, même si vous ne payez pas d’impôt',
+    'Jusqu’à 5 000 € de travaux par an, soit 2 500 € de crédit d’impôt',
+    'Tonte, taille de haies, désherbage, débroussaillage, ramassage des feuilles',
+    'Attestation fiscale fournie chaque année pour votre déclaration',
+  ],
+  taxCreditNote:
+    'Petits travaux de jardinage au sens des services à la personne, dans la limite de 5 000 € de dépenses par an et par foyer.',
   // Bandeau de chiffres : données réelles pré-remplies par l'API (note Google + nombre d'avis).
   trustItems: [
     { value: '4,9/5', label: 'Note Google' },
