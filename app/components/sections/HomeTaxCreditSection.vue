@@ -97,10 +97,11 @@ const content: ComputedRef<VerdurePageContent> = inject(
 
 .tax-credit__rate {
   margin: 0;
-  font-size: clamp(64px, 16vw, 112px);
+  font-size: clamp(56px, 14vw, 96px);
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.03em;
+  white-space: nowrap;
 }
 
 .tax-credit__caption {
@@ -156,11 +157,15 @@ const content: ComputedRef<VerdurePageContent> = inject(
 
 @media (min-width: 900px) {
   .tax-credit__card {
-    grid-template-columns: minmax(280px, 0.8fr) 1.6fr;
+    grid-template-columns: minmax(300px, 0.9fr) 1.6fr;
   }
 
   .tax-credit__figure {
     padding: 48px 32px;
+  }
+
+  .tax-credit__rate {
+    font-size: clamp(72px, 7vw, 96px);
   }
 
   .tax-credit__copy {
