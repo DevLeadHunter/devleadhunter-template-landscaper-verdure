@@ -125,17 +125,14 @@ const SERVICE_IMAGES: string[] = [
   '/images/verdure/image-import-6.jpg',
 ]
 
-/** Dossier des photos du layer : une réalisation qui en montre une n'est pas un chantier du prospect. */
 const BUNDLED_IMAGE_FOLDER: string = '/images/verdure/'
 
-/** Titres inventés des réalisations d'exemple semées autrefois, reconnus même quand leur photo a été recopiée. */
-const EXAMPLE_PORTFOLIO_TITLES: string[] = [
+const SEEDED_EXAMPLE_PORTFOLIO_TITLES: string[] = [
   "Transformation complète d'un jardin : terrasse, massifs et éclairage",
   "Remise en état d'un extérieur : pelouse, haies et allées rafraîchies",
 ]
 
-/** Article qu'une préposition « à » contracte devant un nom de ville (« Le Locle », « Les Abymes »). */
-const CONTRACTING_ARTICLE: RegExp = /^(les?)\s+(?=\S)/i
+const CITY_ARTICLE_CONTRACTED_AFTER_A: RegExp = /^(les?)\s+(?=\S)/i
 
 /** Prestations par défaut quand le scraping n'a rien remonté. */
 const DEFAULT_SERVICES: VerdureService[] = [
@@ -219,7 +216,7 @@ function firstFilled(...values: (string | undefined)[]): string {
  * @returns La ville précédée de sa préposition.
  */
 export function cityWithPreposition(city: string): string {
-  const article: RegExpExecArray | null = CONTRACTING_ARTICLE.exec(city)
+  const article: RegExpExecArray | null = CITY_ARTICLE_CONTRACTED_AFTER_A.exec(city)
   if (!article) {
     return `à ${city}`
   }
@@ -228,9 +225,9 @@ export function cityWithPreposition(city: string): string {
 }
 
 /**
- * Dit si une réalisation montre un chantier du prospect, ni photo de la template ni exemple inventé.
+ * Dit si une réalisation montre un chantier du prospect : ni photo du layer, ni exemple semé avant (reconnu à son titre inventé, même quand sa photo a été recopiée ailleurs).
  * @param item - Réalisation du contenu.
- * @returns Vrai quand la réalisation a une photo qui ne vient pas de la template et un titre qui n'est pas un exemple.
+ * @returns Vrai quand la réalisation a une photo qui ne vient pas du layer et un titre qui n'est pas celui d'un exemple.
  */
 function isProspectPortfolioItem(item: SiteContentPortfolioItem): boolean {
   const image: string = firstFilled(item.image)
@@ -238,7 +235,7 @@ function isProspectPortfolioItem(item: SiteContentPortfolioItem): boolean {
   return (
     image.length > 0 &&
     !image.includes(BUNDLED_IMAGE_FOLDER) &&
-    !EXAMPLE_PORTFOLIO_TITLES.includes(title)
+    !SEEDED_EXAMPLE_PORTFOLIO_TITLES.includes(title)
   )
 }
 

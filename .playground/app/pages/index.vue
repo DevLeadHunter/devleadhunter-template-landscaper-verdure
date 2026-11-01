@@ -61,7 +61,6 @@ const previewContent: SiteContent = {
     { title: 'Terrain laissé propre' },
     { title: 'Conseils sur les végétaux' },
   ],
-  // Réalisations du prospect : une photo embarquée par la template (/images/verdure/) serait écartée.
   portfolio: [
     {
       image: '/images/image-import-12.jpg',
