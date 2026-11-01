@@ -108,14 +108,7 @@ const emailLabel: ComputedRef<string> = computed((): string =>
 
 const navItems: ComputedRef<{ label: string; to: string }[]> = computed(
   (): { label: string; to: string }[] =>
-    injectedContent
-      ? [
-          { label: 'Prestations', to: '#services' },
-          { label: 'À propos', to: '#about' },
-          { label: 'Réalisations', to: '#portfolio' },
-          { label: 'Contact', to: '#contact' },
-        ]
-      : site.nav,
+    injectedContent ? injectedContent.value.navigation : site.nav,
 )
 
 const footerServices: ComputedRef<string[]> = computed((): string[] =>

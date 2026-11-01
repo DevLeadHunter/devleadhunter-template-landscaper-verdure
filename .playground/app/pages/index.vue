@@ -56,6 +56,24 @@ const previewContent: SiteContent = {
       text: 'Création du massif conforme à ce qu’on avait imaginé ensemble, avec de bons conseils sur les végétaux.',
     },
   ],
+  strengths: [
+    { title: 'Taille de haies et élagage' },
+    { title: 'Terrain laissé propre' },
+    { title: 'Conseils sur les végétaux' },
+  ],
+  // Réalisations du prospect : une photo embarquée par la template (/images/verdure/) serait écartée.
+  portfolio: [
+    {
+      image: '/images/image-import-12.jpg',
+      title: 'Massif de vivaces créé le long d’une allée',
+      category: 'Création',
+    },
+    {
+      image: '/images/image-import.jpg',
+      title: 'Haies taillées et pelouse remise en état',
+      category: 'Entretien',
+    },
+  ],
   social: [
     { network: 'Facebook', url: 'https://facebook.com/jardins-emeraude' },
     { network: 'Instagram', url: 'https://instagram.com/jardins.emeraude' },

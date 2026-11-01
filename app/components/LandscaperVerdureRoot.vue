@@ -16,7 +16,9 @@
       </section>
       <StatsBandSection />
       <HomeHowSection />
-      <section id="portfolio">
+      <section
+        v-if="parsed.portfolio.length > 0"
+        id="portfolio">
         <HomePortfolioSection v-bind="editableAttrs(props.content._editable?.portfolio)" />
       </section>
       <section id="reviews">
@@ -59,7 +61,7 @@ import ContactSection from './sections/ContactSection.vue'
 import type { SiteContent } from '~/types/SiteContent'
 import { editableAttrs } from '@devleadhunter/website-content'
 import type { VerdurePageContent } from '~/types/verdure'
-import { buildVerdureContent, VERDURE_CONTENT_KEY } from '~/types/verdure'
+import { buildVerdureContent, cityWithPreposition, VERDURE_CONTENT_KEY } from '~/types/verdure'
 
 /**
  * Racine de la template — l'unique point d'entrée public rendu par demo-host.
@@ -95,7 +97,7 @@ useHead(
   } => {
     const businessName: string = parsed.value.businessName
     const city: string = parsed.value.contact.city
-    const seoTitle: string = city ? `${businessName} à ${city}` : businessName
+    const seoTitle: string = city ? `${businessName} ${cityWithPreposition(city)}` : businessName
     const description: string = parsed.value.hero.lead
     const image: string = parsed.value.hero.image
     const meta: { name?: string; property?: string; content: string }[] = [

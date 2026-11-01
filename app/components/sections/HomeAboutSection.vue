@@ -6,7 +6,7 @@
         class="about__media">
         <img
           :src="content.about.image"
-          alt="L'équipe au travail sur un chantier paysager"
+          alt="Chantier d'aménagement paysager"
           width="458"
           height="540" />
       </div>
@@ -18,7 +18,9 @@
           <h2 class="heading-xl">{{ content.about.heading }}</h2>
           <p class="body-text">{{ content.about.text }}</p>
         </div>
-        <ul class="about__list">
+        <ul
+          v-if="content.about.checks.length > 0"
+          class="about__list">
           <li
             v-for="(item, index) in content.about.checks"
             :key="item">

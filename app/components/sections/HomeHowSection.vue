@@ -6,10 +6,7 @@
         class="how__heading">
         <p class="eyebrow">{{ content.howHeading.eyebrow }}</p>
         <h2 class="heading-xl">{{ content.howHeading.title }}</h2>
-        <p class="lead-sm">
-          Un déroulé simple et sans stress : vous savez toujours où en est votre projet, du premier
-          rendez-vous à la dernière finition.
-        </p>
+        <p class="lead-sm">Les étapes de votre projet, du premier échange aux finitions.</p>
       </div>
       <div
         v-reveal.stagger

@@ -1,5 +1,11 @@
 import type { ComputedRef, InjectionKey } from 'vue'
-import type { SiteContent, SiteContentFaqItem, SiteContentService } from './SiteContent'
+import type {
+  SiteContent,
+  SiteContentFaqItem,
+  SiteContentPortfolioItem,
+  SiteContentService,
+  SiteContentStrength,
+} from './SiteContent'
 import { professionalLicenseLine, regionalLabel } from '@devleadhunter/website-content'
 
 /** Hero de la one-page (titre, accroche, CTA). */
@@ -83,6 +89,7 @@ export interface VerdurePageContent {
   businessName: string
   logo: string
   country: string
+  navigation: { label: string; to: string }[]
   hero: VerdureHero
   servicesHeading: { eyebrow: string; title: string; lead: string }
   services: VerdureService[]
@@ -118,10 +125,17 @@ const SERVICE_IMAGES: string[] = [
   '/images/verdure/image-import-6.jpg',
 ]
 
-const PORTFOLIO_IMAGES: string[] = [
-  '/images/verdure/image-import-12.jpg',
-  '/images/verdure/image-import.jpg',
+/** Dossier des photos du layer : une réalisation qui en montre une n'est pas un chantier du prospect. */
+const BUNDLED_IMAGE_FOLDER: string = '/images/verdure/'
+
+/** Titres inventés des réalisations d'exemple semées autrefois, reconnus même quand leur photo a été recopiée. */
+const EXAMPLE_PORTFOLIO_TITLES: string[] = [
+  "Transformation complète d'un jardin : terrasse, massifs et éclairage",
+  "Remise en état d'un extérieur : pelouse, haies et allées rafraîchies",
 ]
+
+/** Article qu'une préposition « à » contracte devant un nom de ville (« Le Locle », « Les Abymes »). */
+const CONTRACTING_ARTICLE: RegExp = /^(les?)\s+(?=\S)/i
 
 /** Prestations par défaut quand le scraping n'a rien remonté. */
 const DEFAULT_SERVICES: VerdureService[] = [
@@ -145,32 +159,26 @@ const DEFAULT_SERVICES: VerdureService[] = [
   },
   {
     title: 'Arrosage & clôtures',
-    description:
-      'Arrosage automatique, clôtures et portails posés dans les règles, sans mauvaise surprise.',
+    description: 'Arrosage automatique, clôtures et portails, posés avec soin.',
     image: SERVICE_IMAGES[3] ?? '',
   },
 ]
 
 const DEFAULT_FAQS: Required<SiteContentFaqItem>[] = [
   {
-    question: 'À quelle fréquence intervenez-vous pour l’entretien ?',
+    question: 'Quels travaux de jardin sont proposés ?',
     answer:
-      'Selon vos besoins : au contrat à l’année (passages réguliers planifiés ensemble) ou à la demande. En pleine saison de pousse, un passage toutes les une à deux semaines garde un jardin impeccable.',
+      'Ceux présentés dans la section prestations. Pour un autre besoin, il suffit de demander.',
   },
   {
-    question: 'Le devis est-il vraiment gratuit ?',
+    question: 'Que préciser lors d’une première demande ?',
     answer:
-      'Oui. Nous nous déplaçons, écoutons votre projet et vous remettons un devis écrit, détaillé et sans engagement, avant tout début de chantier.',
+      'L’adresse du jardin, les travaux souhaités et, si possible, quelques photos de votre extérieur.',
   },
   {
-    question: 'Travaillez-vous avec des produits respectueux de l’environnement ?',
+    question: 'Faut-il une visite avant les travaux ?',
     answer:
-      'Absolument. Nous privilégions les traitements naturels, le paillage, des végétaux adaptés au climat local et l’évacuation responsable des déchets verts.',
-  },
-  {
-    question: 'Intervenez-vous toute l’année ?',
-    answer:
-      'Oui. Créations et aménagements à la belle saison, plantations et tailles à l’automne, entretien et préparation des massifs le reste de l’année : le calendrier s’adapte à votre jardin.',
+      'Selon le chantier, une visite permet de voir le terrain et de prendre les mesures avant de chiffrer les travaux.',
   },
 ]
 
@@ -179,19 +187,17 @@ const DEFAULT_HOW: VerdureStep[] = [
     step: 'Étape 1',
     title: 'Visite & écoute',
     description:
-      'Nous venons voir votre terrain, écoutons vos envies et vos contraintes, et prenons les mesures nécessaires.',
+      'Un premier rendez-vous sur le terrain pour écouter vos envies, repérer les contraintes et prendre les mesures.',
   },
   {
     step: 'Étape 2',
     title: 'Devis détaillé',
-    description:
-      'Vous recevez une proposition claire : prestations, végétaux ou matériaux, délais et budget, sans surprise.',
+    description: 'Une proposition claire : prestations, végétaux ou matériaux, délais et budget.',
   },
   {
     step: 'Étape 3',
     title: 'Réalisation soignée',
-    description:
-      'De la préparation du sol aux finitions, nous réalisons le chantier avec soin et laissons un extérieur propre.',
+    description: 'De la préparation du sol aux finitions, le chantier est mené avec soin.',
   },
 ]
 
@@ -205,6 +211,35 @@ function firstFilled(...values: (string | undefined)[]): string {
     if (typeof value === 'string' && value.trim().length > 0) return value.trim()
   }
   return ''
+}
+
+/**
+ * Écrit une ville derrière « à », contracté devant l'article Le ou Les (« au Locle », « aux Abymes »).
+ * @param city - Ville telle qu'écrite dans le contenu.
+ * @returns La ville précédée de sa préposition.
+ */
+export function cityWithPreposition(city: string): string {
+  const article: RegExpExecArray | null = CONTRACTING_ARTICLE.exec(city)
+  if (!article) {
+    return `à ${city}`
+  }
+  const preposition: string = article[1]?.toLowerCase() === 'le' ? 'au' : 'aux'
+  return `${preposition} ${city.slice(article[0].length)}`
+}
+
+/**
+ * Dit si une réalisation montre un chantier du prospect, ni photo de la template ni exemple inventé.
+ * @param item - Réalisation du contenu.
+ * @returns Vrai quand la réalisation a une photo qui ne vient pas de la template et un titre qui n'est pas un exemple.
+ */
+function isProspectPortfolioItem(item: SiteContentPortfolioItem): boolean {
+  const image: string = firstFilled(item.image)
+  const title: string = firstFilled(item.title).replaceAll('’', "'")
+  return (
+    image.length > 0 &&
+    !image.includes(BUNDLED_IMAGE_FOLDER) &&
+    !EXAMPLE_PORTFOLIO_TITLES.includes(title)
+  )
 }
 
 /**
@@ -233,37 +268,15 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
   const services: VerdureService[] =
     scrapedServices.length >= 3 ? scrapedServices : DEFAULT_SERVICES
 
-  const editablePortfolio: VerdurePortfolioItem[] = (content.portfolio ?? [])
-    .filter((item: { image?: string }): boolean => firstFilled(item.image).length > 0)
+  const portfolio: VerdurePortfolioItem[] = (content.portfolio ?? [])
+    .filter(isProspectPortfolioItem)
     .slice(0, 2)
-    .map(
-      (
-        item: { image?: string; title?: string; category?: string },
-        index: number,
-      ): VerdurePortfolioItem => ({
-        category: firstFilled(item.category, 'Réalisation'),
-        title: firstFilled(item.title, 'Aménagement complet d’un jardin : avant, pendant, après'),
-        image: firstFilled(item.image),
-        accent: index === 0,
-      }),
-    )
-  const portfolio: VerdurePortfolioItem[] =
-    editablePortfolio.length > 0
-      ? editablePortfolio
-      : [
-          {
-            category: 'Création',
-            title: 'Transformation complète d’un jardin : terrasse, massifs et éclairage',
-            image: PORTFOLIO_IMAGES[0] ?? '',
-            accent: true,
-          },
-          {
-            category: 'Entretien',
-            title: 'Remise en état d’un extérieur : pelouse, haies et allées rafraîchies',
-            image: PORTFOLIO_IMAGES[1] ?? '',
-            accent: false,
-          },
-        ]
+    .map((item: SiteContentPortfolioItem, index: number): VerdurePortfolioItem => ({
+      category: firstFilled(item.category, 'Réalisation'),
+      title: firstFilled(item.title, businessName),
+      image: firstFilled(item.image),
+      accent: index === 0,
+    }))
 
   const faqs: SiteContentFaqItem[] =
     (content.faq ?? []).length > 0
@@ -289,10 +302,7 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
           description: regionalLabel(content, step.description),
         }))
 
-  const defaultAboutClosingSentence: string = regionalLabel(
-    content,
-    'Chaque projet commence par une visite et un devis gratuit, et se termine par un extérieur dont on prend plaisir à profiter.',
-  )
+  const cityWithItsPreposition: string = city ? cityWithPreposition(city) : ''
 
   const reviews: VerdureReview[] = (content.reviews ?? [])
     .filter((review: { text?: string }): boolean => firstFilled(review.text).length > 0)
@@ -307,27 +317,30 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
     businessName,
     logo,
     country: firstFilled(content.country),
+    navigation: [
+      { label: 'Prestations', to: '#services' },
+      { label: 'À propos', to: '#about' },
+      ...(portfolio.length > 0 ? [{ label: 'Réalisations', to: '#portfolio' }] : []),
+      { label: 'Contact', to: '#contact' },
+    ],
     hero: {
       title: firstFilled(content.heroTitle, 'Des extérieurs pensés, plantés et entretenus'),
       lead: firstFilled(
         content.subtitle,
-        `${businessName} conçoit, aménage et entretient vos espaces verts${city ? ` à ${city}` : ''}, avec des pratiques durables et un vrai souci du détail.`,
+        `${businessName} conçoit, aménage et entretient vos espaces verts${city ? ` ${cityWithItsPreposition}` : ''}.`,
       ),
-      ctaLabel: firstFilled(
-        content.ctaQuoteLabel,
-        regionalLabel(content, 'Demander un devis gratuit'),
-      ),
+      ctaLabel: firstFilled(content.ctaQuoteLabel, regionalLabel(content, 'Demander un devis')),
       image: firstFilled(content.heroImage, '/images/verdure/image-import-27.jpg'),
     },
     servicesHeading: {
       eyebrow: 'Nos prestations',
       title: firstFilled(
         content.servicesHeading,
-        regionalLabel(content, 'Un seul artisan pour tout votre extérieur'),
+        city ? `Votre paysagiste ${cityWithItsPreposition}` : 'Votre paysagiste',
       ),
       lead: firstFilled(
         content.servicesLead,
-        'Du dessin du jardin à son entretien régulier : un interlocuteur unique, un matériel adapté et des végétaux choisis pour votre terrain.',
+        'Du dessin du jardin à son entretien régulier, des prestations adaptées à votre terrain.',
       ),
     },
     services,
@@ -335,13 +348,12 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
       heading: firstFilled(content.aboutHeading, `Qui est ${businessName} ?`),
       text: firstFilled(
         content.about,
-        `Paysagiste ${city ? `à ${city}` : 'local'}, nous accompagnons particuliers et professionnels dans la création et l'entretien de leurs espaces verts. ${defaultAboutClosingSentence}`,
+        `Paysagiste ${city ? cityWithItsPreposition : 'local'} : création, aménagement et entretien de jardins et d'espaces verts.`,
       ),
-      checks: [
-        regionalLabel(content, 'Devis gratuit et sans engagement'),
-        'Entreprise assurée, travail garanti',
-        'Pratiques durables et éco-responsables',
-      ],
+      checks: (content.strengths ?? [])
+        .map((strength: SiteContentStrength): string => firstFilled(strength.title))
+        .filter((title: string): boolean => title.length > 0)
+        .slice(0, 3),
       image: firstFilled(content.aboutImage, '/images/verdure/image-import-19.jpg'),
     },
     // Jamais de défaut : la section n'existe que pour une entreprise déclarée services à la personne.
@@ -391,20 +403,17 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
       })),
     contactHeading: {
       eyebrow: 'Contact',
-      title: firstFilled(
-        content.contactHeading,
-        regionalLabel(content, 'Demandez votre devis gratuit'),
-      ),
+      title: firstFilled(content.contactHeading, regionalLabel(content, 'Demandez votre devis')),
       lead: firstFilled(
         content.contactLead,
-        'Appelez-nous, écrivez-nous ou laissez vos coordonnées : nous revenons vers vous sous 48 h avec un premier avis et un rendez-vous de visite.',
+        'Décrivez votre extérieur et les travaux que vous envisagez.',
       ),
     },
     cta: {
       title: firstFilled(content.ctaTitle, 'Parlons de votre jardin'),
       lead: firstFilled(
         content.ctaLead,
-        `Un projet d'aménagement ou besoin d'un entretien régulier${city ? ` à ${city}` : ''} ? Décrivez-nous votre extérieur, nous revenons vers vous sous 48 h.`,
+        `Un projet d'aménagement ou un entretien régulier${city ? ` ${cityWithItsPreposition}` : ''} ? Chaque projet commence par un échange.`,
       ),
       label: firstFilled(content.ctaCallLabel, 'Être rappelé'),
       background: firstFilled(content.images?.ctaBackground, '/images/verdure/image-import-3.jpg'),

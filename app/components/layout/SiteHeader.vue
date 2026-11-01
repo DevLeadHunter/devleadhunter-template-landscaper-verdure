@@ -115,14 +115,7 @@ const injectedContent: ComputedRef<VerdurePageContent> | null = inject(VERDURE_C
 /** Ancres de la one-page, ou pages du playground en fallback. */
 const navItems: ComputedRef<{ label: string; to: string }[]> = computed(
   (): { label: string; to: string }[] =>
-    injectedContent
-      ? [
-          { label: 'Prestations', to: '#services' },
-          { label: 'À propos', to: '#about' },
-          { label: 'Réalisations', to: '#portfolio' },
-          { label: 'Contact', to: '#contact' },
-        ]
-      : site.nav,
+    injectedContent ? injectedContent.value.navigation : site.nav,
 )
 
 /** Premier mot du nom : partie mise en avant du logo. */
