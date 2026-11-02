@@ -95,7 +95,7 @@ export interface VerdurePageContent {
   services: VerdureService[]
   taxCredit: VerdureTaxCredit
   about: VerdureAbout
-  howHeading: { eyebrow: string; title: string }
+  howHeading: { eyebrow: string; title: string; lead: string }
   how: VerdureStep[]
   portfolioHeading: { eyebrow: string; title: string; lead: string }
   portfolio: VerdurePortfolioItem[]
@@ -365,6 +365,10 @@ export function buildVerdureContent(content: SiteContent): VerdurePageContent {
     howHeading: {
       eyebrow: 'Notre méthode',
       title: firstFilled(content.stepsHeading, 'Comment ça se passe ?'),
+      lead: firstFilled(
+        content.stepsLead,
+        'Les étapes de votre projet, du premier échange aux finitions.',
+      ),
     },
     how,
     portfolioHeading: {
